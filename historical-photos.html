@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- 保持与首页完全相同的head部分 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一二一运动 - 历史影像</title>
+    <style>
+        /* 保持与首页完全相同的CSS样式 */
+        :root {
+                font-size: 20px;
+                --primary-color: #b90404; /* 标准红色 */
+                --secondary-color: #3498db;
+                --dark-color: rgb(207, 160, 77);
+                --light-color: #ecf0f13c;
+                --accent-color: #e74c3c;
+            }
+        
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            
+            body {
+                font-family: '华文新魏', Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                background-image: url('https://bpic.588ku.com/back_pic/05/98/71/475ef75d14caa09.jpg');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            }
+    
+            .header {
+                font-size: 34px; 
+                background-color: var(--dark-color);
+                color: white;
+                padding: 1rem;
+                text-align: center;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                position: relative;
+            }
+            
+            .search-container {
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            .search-box {
+                padding: 8px 15px;
+                border-radius: 20px;
+                border: none;
+                outline: none;
+                width: 200px;
+                transition: width 0.3s ease;
+            }
+            
+            .search-box:focus {
+                width: 250px;
+            }
+            
+            .nav-container {
+                background-color: var(--primary-color);
+                padding: 0.5rem 0;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            
+            .nav-menu {
+                display: flex;
+                justify-content: center;
+                list-style: none;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 1rem;
+            }
+            
+            .nav-menu li {
+                margin: 0 1rem;
+                position: relative;
+            }
+            
+            .nav-menu a {
+                color: white;
+                text-decoration: none;
+                font-weight: bold;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                transition: all 0.3s ease;
+                display: block;
+            }
+            
+            .nav-menu a:hover, .nav-menu a.active {
+                background-color: rgba(255,255,255,0.2);
+            }
+            
+            /* 下拉菜单样式（保持不变） */
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: white;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+                border-radius: 4px;
+                top: 100%;
+                left: 0;
+            }
+
+            .dropdown-content a {
+                color: var(--dark-color);
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                transition: background-color 0.3s;
+            }
+
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+            /* 新增：三级菜单样式（右侧展开，保持原风格） */
+            .dropdown-submenu {
+                position: relative; /* 确保三级菜单定位正确 */
+            }
+
+            .dropdown-submenu .submenu-content {
+                display: none;
+                position: absolute;
+                left: 100%;        /* 从二级菜单右侧弹出 */
+                top: 0;            /* 对齐二级菜单顶部 */
+                background-color: white;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                border-radius: 4px;
+                z-index: 2;         /* 确保三级菜单覆盖二级菜单 */
+            }
+
+            /* 悬停时显示三级菜单 */
+            .dropdown-submenu:hover .submenu-content {
+                display: block;
+            }
+
+            /* 保持链接样式一致 */
+            .submenu-content a {
+                color: var(--dark-color);
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                transition: background-color 0.3s;
+            }
+
+            .submenu-content a:hover {
+                background-color: #f1f1f1;
+            }
+            
+            .container {
+                display: flex;
+                flex-direction: column;
+                min-height: calc(100vh - 150px);
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 1rem;
+            }
+            
+            .home-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 2rem;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                margin-bottom: 2rem;
+            }
+            
+            .home-content h2 {
+                color: var(--primary-color);
+                margin-bottom: 1rem;
+            }
+            
+            .home-content p {
+                margin-bottom: 1.5rem;
+                max-width: 800px;
+            }
+            
+            .card-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            
+            .card {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                overflow: hidden;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+            
+            .card-img {
+                height: 180px;
+                background-color: var(--light-color);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                color: var(--primary-color);
+                background-size: cover;
+                background-position: center;
+            }
+            
+            .card-content {
+                padding: 1.5rem;
+            }
+            
+            .card-content h3 {
+                color: var(--dark-color);
+                margin-bottom: 0.5rem;
+            }
+            
+            .card-content p {
+                margin-bottom: 1rem;
+                color: #666;
+            }
+            
+            .btn {
+                display: inline-block;
+                background-color: var(--primary-color);
+                color: white;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+                border: none;
+                cursor: pointer;
+            }
+            
+            .btn:hover {
+                background-color: var(--secondary-color);
+            }
+            
+            /* 分页导航样式 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            list-style: none;
+        }
+        
+        .pagination li {
+            margin: 0 5px;
+        }
+        
+        .pagination a {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .pagination a:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .pagination a.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+            /* 响应式设计 */
+            @media (max-width: 768px) {
+                .nav-menu {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                
+                .nav-menu li {
+                    margin: 0.5rem 0;
+                    width: 100%;
+                    text-align: center;
+                }
+                
+                .card-container {
+                    grid-template-columns: 1fr;
+                }
+                
+                .search-container {
+                    position: static;
+                    transform: none;
+                    margin-top: 10px;
+                    width: 100%;
+                    text-align: center;
+                }
+                
+                .search-box {
+                    width: 80%;
+                }
+                
+                .dropdown-content {
+                    position: static;
+                    width: 100%;
+                    box-shadow: none;
+                }
+            }
+        /* 新增原始文献页面特有样式 */
+        .documents-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .document-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .document-card:hover {
+            transform: translateY(-5px);
+        }
+        .document-image {
+            height: 200px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .document-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .document-card:hover .document-image img {
+            transform: scale(1.05);
+        }
+        .document-type {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        .document-content {
+            padding: 1.25rem;
+        }
+        .document-title {
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .document-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+        .document-description {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        .document-link {
+            display: inline-block;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            text-decoration: none;
+            border-bottom: 1px dashed var(--primary-color);
+            transition: all 0.2s ease;
+        }
+        .document-link:hover {
+            color: var(--dark-color);
+            border-bottom-color: var(--dark-color);
+        }
+        .category-header {
+            margin: 2.5rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--light-color);
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        .search-bar {
+            margin: 1.5rem 0;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .search-bar button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .search-bar button:hover {
+            background-color: var(--dark-color);
+        }
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* 新增历史图片页面特有样式 */
+        .photos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .photo-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .photo-card:hover {
+            transform: translateY(-5px);
+        }
+        .photo-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .photo-content {
+            padding: 1.25rem;
+        }
+        .photo-title {
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .photo-description {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        .photo-source {
+            color: #666;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+        .category-header {
+            margin: 2.5rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--light-color);
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        .search-bar {
+            margin: 1.5rem 0;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .search-bar button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .search-bar button:hover {
+            background-color: var(--dark-color);
+        }
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            list-style: none;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination a {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .pagination a:hover, .pagination a.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        .lightbox-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            padding: 10px;
+            background-color: rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部区域 - 与首页相同 -->
+    <div class="header">
+        <h1>一二一运动</h1>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="搜索内容..." id="searchInput">
+        </div>
+    </div>
+    
+    <!-- 导航栏 - 与首页相同 -->
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <li><a href="home page.html" class="nav-link">首页</a></li>
+            <li class="dropdown">
+                <a href="#" class="nav-link">历史资料</a>
+                <div class="dropdown-content">
+                    <a href="history-background.html" class="nav-link">历史背景</a>
+                    <a href="movement-process.html" class="nav-link">运动过程</a>
+                    <a href="historical-significance.html" class="nav-link">历史意义</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="nav-link">文献资料</a>
+                <div class="dropdown-content">
+                    <a href="original-documents.html" class="nav-link">原始文献</a>
+                    <a href="research-papers.html" class="nav-link active">研究论文</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="nav-link">多媒体</a>
+                <div class="dropdown-content">
+                    <!-- 二级菜单：历史图片（带三级子菜单） -->
+                    <div class="dropdown-submenu">
+                        <a href="historical-photos.html" class="nav-link">历史图片</a>
+                        <!-- 三级菜单（右侧展开） -->
+                        <div class="submenu-content">
+                            <a href="historical-photos.html" class="nav-link active">图像档案</a>
+                            <a href="https://www.hswh.org.cn/wzzx/gmdb/2013-12-28/24360.html" class="nav-link">纪念馆</a>
+                        </div>
+                    </div>
+                    <a href="video-materials.html" class="nav-link">视频资料</a>
+                </div>
+            </li>
+            <li><a href="about-us.html" class="nav-link">关于我们</a></li>
+        </ul>
+    </div>
+    
+    <div class="container">
+        <!-- 页面标题 -->
+        <div class="page-header" style="text-align: center; margin-bottom: 1.5rem;">
+            <h2 style="font-size: 2rem; color: var(--primary-color);">一二一运动珍贵历史影像</h2>
+        </div>
+        
+        <!-- 搜索和筛选区域 -->
+        <div class="search-bar">
+            <input type="text" placeholder="搜索图片标题、描述或关键词...">
+            <button>搜索</button>
+        </div>
+        
+        <div class="filter-options">
+            <button class="filter-btn active">全部</button>
+            <button class="filter-btn">运动过程</button>
+            <button class="filter-btn">烈士纪念</button>
+            <button class="filter-btn">纪念馆</button>
+            <button class="filter-btn">历史文献</button>
+        </div>
+        
+        <!-- 历史图片内容区域 -->
+        <div class="photos-content" style="background-color: white; border-radius: 8px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            
+            <!-- 第一部分：运动过程照片 -->
+            <h3 class="category-header">运动过程照片</h3>
+            <div class="photos-container">
+                <!-- 图片1 -->
+                <div class="photo-card">
+                    <img src="https://example.com/placeholder1.jpg" alt="一二一运动游行" class="photo-image">
+                    <!-- 实际部署时替换为真实图片链接，例如：
+                    <img src="images/游行照片1.jpg" alt="一二一运动游行" class="photo-image">
+                    -->
+                    <div class="photo-content">
+                        <h3 class="photo-title">一二一运动游行队伍</h3>
+                        <p class="photo-description">1945年12月1日，昆明学生为抗议国民党暴行举行大规模游行示威，图为游行队伍经过昆明街头。</p>
+                        <p class="photo-source">图片来源：一二一运动纪念馆</p>
+                    </div>
+                </div>
+                
+                <!-- 图片2 -->
+                <div class="photo-card">
+                    <img src="https://example.com/placeholder2.jpg" alt="时事晚会现场" class="photo-image">
+                    <div class="photo-content">
+                        <h3 class="photo-title">反内战时事晚会</h3>
+                        <p class="photo-description">1945年11月25日晚，西南联大等校学生在联大草坪举行反内战时事晚会，到会者达6000多人。</p>
+                        <p class="photo-source">图片来源：云南师范大学西南联大博物馆</p>
+                    </div>
+                </div>
+                
+                <!-- 图片3 -->
+                <div class="photo-card">
+                    <img src="https://example.com/placeholder3.jpg" alt="学生宣传队" class="photo-image">
+                    <div class="photo-content">
+                        <h3 class="photo-title">学生宣传队</h3>
+                        <p class="photo-description">运动期间，学生组织了100多个宣传队上街宣传，揭露国民党暴行，呼吁和平民主。</p>
+                        <p class="photo-source">图片来源：历史档案</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第二部分：烈士纪念照片 -->
+            <h3 class="category-header">烈士纪念照片</h3>
+            <div class="photos-container">
+                <!-- 图片4 -->
+                <div class="photo-card">
+                    <img src="https://example.com/placeholder4.jpg" alt="四烈士出殡" class="photo-image">
+                    <div class="photo-content">
+                        <h3 class="photo-title">四烈士出殡仪式</h3>
+                        <p class="photo-description">1946年3月17日，昆明3万余名师生和各界人士为四烈士举行出殡仪式，图为出殡队伍经过昆明街头。</p>
+                        <p class="photo-source">图片来源：一二一运动纪念馆</p>
+                    </div>
+                </div>
+                
+                <!-- 图片5 -->
+                <div class="photo-card">
+                    <img src="https://example.com/placeholder5.jpg" alt="四烈士墓" class="photo-image">
+                    <div class="photo-content">
+                        <h3 class="photo-title">四烈士墓</h3>
+                        <p class="photo-description">为纪念烈士，社会各界捐款在西南联大校园内修建四烈士墓，墓道前方矗立着两根石柱，顶端是鲜红的火炬。</p>
+                        <p class="photo-source">图片来源：云南师范大学</p>
+                    </div>
+                </div>
+                
+                <!-- 图片6 -->
+                <div class="photo-card">
+                    <img src="https://example.com/placeholder6.jpg" alt="烈士灵堂" class="photo-image">
+                    <div class="photo-content">
+                        <h3 class="photo-title">烈士灵堂</h3>
+                        <p class="photo-description">四烈士灵堂设在联大图书馆，展出烈士血衣，控诉反动派的暴行，一个半月内有约15万人次参加祭奠。</p>
+                        <p class="photo-source">图片来源：历史档案</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第三部分：纪念馆与纪念碑照片 -->
+            <h3 class="category-header">纪念馆与纪念碑照片</h3>
+            <div class="photos-container">
+                <!-- 图片7 -->
+                <div class="photo-card">
+                    <img src="https://example.com/placeholder7.jpg" alt="一二一运动纪念馆" class="photo-image">
+                    <div class="photo-content">
+                        <h3 class="photo-title">一二一运动纪念馆</h3>
+                        <p class="photo-description">纪念馆位于云南师范大学校园内，为纪念1945年爆发于昆明的"一二·一"爱国民主运动而建。</p>
+                        <p class="photo-source">图片来源：云南师范大学</p>
+                    </div>
+                </div>
+                
+                <!-- 图片8 -->
+                <div class="photo-card">
+                    <img src="https://example.com/placeholder8.jpg" alt="纪念馆展览" class="photo-image">
+                    <div class="photo-content">
+                        <h3 class="photo-title">纪念馆展览</h3>
+                        <p class="photo-description">纪念馆内设有"一二·一"运动展室和西南联大校史展室，展出相关实物60余件，图片230余幅。</p>
+                        <p class="photo-source">图片来源：一二一运动纪念馆</p>
+                    </div>
+                </div>
+                
+                <!-- 图片9 -->
+                <div class="photo-card">
+                    <img src="https://example.com/placeholder9.jpg" alt="闻一多撰写的始末记" class="photo-image">
+                    <div class="photo-content">
+                        <h3 class="photo-title">闻一多撰写的《一二·一运动始末记》</h3>
+                        <p class="photo-description">石柱基座上刻有闻一多先生撰写的《一二·一运动始末记》，记录了运动的经过和意义。</p>
+                        <p class="photo-source">图片来源：云南师范大学</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第四部分：相关历史文献照片 -->
+            <h3 class="category-header">相关历史文献照片</h3>
+            <div class="photos-container">
+                <!-- 图片10 -->
+                <div class="photo-card">
+                    <img src="https://example.com/placeholder10.jpg" alt="《一二·一运动始末记》手稿" class="photo-image">
+                    <div class="photo-content">
+                        <h3 class="photo-title">《一二·一运动始末记》手稿</h3>
+                        <p class="photo-description">闻一多先生撰写的《一二·一运动始末记》手稿，现收藏于中国国家博物馆。</p>
+                        <p class="photo-source">图片来源：中国国家博物馆</p>
+                    </div>
+                </div>
+                
+                <!-- 图片11 -->
+                <div class="photo-card">
+                    <img src="https://example.com/placeholder11.jpg" alt="《新华日报》报道" class="photo-image">
+                    <div class="photo-content">
+                        <h3 class="photo-title">《新华日报》关于一二一运动的报道</h3>
+                        <p class="photo-description">中共领导的重庆《新华日报》发表社论和文章，声援昆明学生运动。</p>
+                        <p class="photo-source">图片来源：历史档案</p>
+                    </div>
+                </div>
+                
+                <!-- 图片12 -->
+                <div class="photo-card">
+                    <img src="https://example.com/placeholder12.jpg" alt="学生抗议书" class="photo-image">
+                    <div class="photo-content">
+                        <h3 class="photo-title">学生抗议书</h3>
+                        <p class="photo-description">运动期间学生连夜赶制的抗议书、呼吁书与罢课倡议书，贴满了联大民主墙、图书馆四周墙上。</p>
+                        <p class="photo-source">图片来源：一二一运动纪念馆</p>
+                    </div>
+                </div>
+            </div>
+            
+        <!-- 分页导航 -->
+        <ul class="pagination">
+            <li><a href="#" class="active">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">下一页 &raquo;</a></li>
+        </ul>
+        </div>
+        </div>
+    </div>
+    
+    <!-- 图片灯箱 -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <img src="" alt="" class="lightbox-content" id="lightboxImage">
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+    
+    <!-- 页脚 - 与首页相同 -->
+    <div class="footer">
+        <p>© 2025 一二一运动数字档案库 版权所有</p>
+    </div>
+    
+    <!-- JavaScript - 与首页相同 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取当前页面路径
+            const currentPath = window.location.pathname.split('/').pop();
+            
+            // 设置活动导航项
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath || 
+                    (currentPath === 'home page.html' && link.getAttribute('href') === 'home page.html')) {
+                    link.classList.add('active');
+                    
+                    // 如果是下拉菜单项，激活父菜单
+                    if (link.parentElement.parentElement.classList.contains('dropdown-content')) {
+                        const parentLink = link.closest('.dropdown').querySelector('.nav-link');
+                        if (parentLink) parentLink.classList.add('active');
+                    }
+                }
+            });
+            
+            // 搜索功能
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value.trim().toLowerCase();
+                    if (searchTerm) {
+                        alert(`正在搜索: ${searchTerm}`);
+                        // 实际项目中可以跳转到搜索结果页面
+                    }
+                }
+            });
+            
+            // 筛选按钮功能
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // 给当前点击的按钮添加active类
+                    this.classList.add('active');
+                    // 这里可以添加实际的筛选逻辑
+                });
+            });
+            
+            // 图片灯箱功能
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImage = document.getElementById('lightboxImage');
+            const lightboxCaption = document.getElementById('lightboxCaption');
+            const lightboxClose = document.getElementById('lightboxClose');
+            
+            document.querySelectorAll('.photo-image').forEach(img => {
+                img.addEventListener('click', function() {
+                    lightboxImage.src = this.src;
+                    lightboxCaption.textContent = this.alt;
+                    lightbox.style.display = 'flex';
+                });
+            });
+            
+            lightboxClose.addEventListener('click', function() {
+                lightbox.style.display = 'none';
+            });
+            
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    lightbox.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

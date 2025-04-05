@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- 保持与首页完全相同的head部分 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一二一运动 - 研究论文</title>
+    <style>
+        /* 保持与首页完全相同的CSS样式 */
+        :root {
+                font-size: 20px;
+                --primary-color: #b90404; /* 标准红色 */
+                --secondary-color: #3498db;
+                --dark-color: rgb(207, 160, 77);
+                --light-color: #ecf0f13c;
+                --accent-color: #e74c3c;
+            }
+        
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            
+            body {
+                font-family: '华文新魏', Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                background-image: url('https://bpic.588ku.com/back_pic/05/98/71/475ef75d14caa09.jpg');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            }
+    
+            .header {
+                font-size: 34px; 
+                background-color: var(--dark-color);
+                color: white;
+                padding: 1rem;
+                text-align: center;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                position: relative;
+            }
+            
+            .search-container {
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            .search-box {
+                padding: 8px 15px;
+                border-radius: 20px;
+                border: none;
+                outline: none;
+                width: 200px;
+                transition: width 0.3s ease;
+            }
+            
+            .search-box:focus {
+                width: 250px;
+            }
+            
+            .nav-container {
+                background-color: var(--primary-color);
+                padding: 0.5rem 0;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            
+            .nav-menu {
+                display: flex;
+                justify-content: center;
+                list-style: none;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 1rem;
+            }
+            
+            .nav-menu li {
+                margin: 0 1rem;
+                position: relative;
+            }
+            
+            .nav-menu a {
+                color: white;
+                text-decoration: none;
+                font-weight: bold;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                transition: all 0.3s ease;
+                display: block;
+            }
+            
+            .nav-menu a:hover, .nav-menu a.active {
+                background-color: rgba(255,255,255,0.2);
+            }
+            
+            /* 下拉菜单样式 */
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: white;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+                border-radius: 4px;
+                top: 100%;
+                left: 0;
+            }
+            
+            .dropdown-content a {
+                color: var(--dark-color);
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                transition: background-color 0.3s;
+            }
+            
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+            
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+            
+            .container {
+                display: flex;
+                flex-direction: column;
+                min-height: calc(100vh - 150px);
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 1rem;
+            }
+            
+            .home-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 2rem;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                margin-bottom: 2rem;
+            }
+            
+            .home-content h2 {
+                color: var(--primary-color);
+                margin-bottom: 1rem;
+            }
+            
+            .home-content p {
+                margin-bottom: 1.5rem;
+                max-width: 800px;
+            }
+            
+            .card-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            
+            .card {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                overflow: hidden;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+            
+            .card-img {
+                height: 180px;
+                background-color: var(--light-color);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                color: var(--primary-color);
+                background-size: cover;
+                background-position: center;
+            }
+            
+            .card-content {
+                padding: 1.5rem;
+            }
+            
+            .card-content h3 {
+                color: var(--dark-color);
+                margin-bottom: 0.5rem;
+            }
+            
+            .card-content p {
+                margin-bottom: 1rem;
+                color: #666;
+            }
+            
+            .btn {
+                display: inline-block;
+                background-color: var(--primary-color);
+                color: white;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+                border: none;
+                cursor: pointer;
+            }
+            
+            .btn:hover {
+                background-color: var(--secondary-color);
+            }
+            
+            /* 分页导航样式 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            list-style: none;
+        }
+        
+        .pagination li {
+            margin: 0 5px;
+        }
+        
+        .pagination a {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .pagination a:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .pagination a.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+            /* 响应式设计 */
+            @media (max-width: 768px) {
+                .nav-menu {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                
+                .nav-menu li {
+                    margin: 0.5rem 0;
+                    width: 100%;
+                    text-align: center;
+                }
+                
+                .card-container {
+                    grid-template-columns: 1fr;
+                }
+                
+                .search-container {
+                    position: static;
+                    transform: none;
+                    margin-top: 10px;
+                    width: 100%;
+                    text-align: center;
+                }
+                
+                .search-box {
+                    width: 80%;
+                }
+                
+                .dropdown-content {
+                    position: static;
+                    width: 100%;
+                    box-shadow: none;
+                }
+            }
+        /* 新增原始文献页面特有样式 */
+        .documents-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .document-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .document-card:hover {
+            transform: translateY(-5px);
+        }
+        .document-image {
+            height: 200px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .document-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .document-card:hover .document-image img {
+            transform: scale(1.05);
+        }
+        .document-type {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        .document-content {
+            padding: 1.25rem;
+        }
+        .document-title {
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .document-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+        .document-description {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        .document-link {
+            display: inline-block;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            text-decoration: none;
+            border-bottom: 1px dashed var(--primary-color);
+            transition: all 0.2s ease;
+        }
+        .document-link:hover {
+            color: var(--dark-color);
+            border-bottom-color: var(--dark-color);
+        }
+        .category-header {
+            margin: 2.5rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--light-color);
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        .search-bar {
+            margin: 1.5rem 0;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .search-bar button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .search-bar button:hover {
+            background-color: var(--dark-color);
+        }
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* 新增研究论文页面特有样式 */
+        .papers-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .paper-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .paper-card:hover {
+            transform: translateY(-5px);
+        }
+        .paper-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            position: relative;
+        }
+        .paper-type {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--dark-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        .paper-content {
+            padding: 1.25rem;
+        }
+        .paper-title {
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .paper-meta {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .paper-author {
+            font-style: italic;
+        }
+        .paper-abstract {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .paper-link {
+            display: inline-block;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            text-decoration: none;
+            border-bottom: 1px dashed var(--primary-color);
+            transition: all 0.2s ease;
+        }
+        .paper-link:hover {
+            color: var(--dark-color);
+            border-bottom-color: var(--dark-color);
+        }
+        .category-header {
+            margin: 2.5rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--light-color);
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        .search-bar {
+            margin: 1.5rem 0;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .search-bar button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .search-bar button:hover {
+            background-color: var(--dark-color);
+        }
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            list-style: none;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination a {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .pagination a:hover, .pagination a.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部区域 - 与首页相同 -->
+    <div class="header">
+        <h1>一二一运动</h1>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="搜索内容..." id="searchInput">
+        </div>
+    </div>
+    
+    <!-- 导航栏 - 与首页相同 -->
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <li><a href="home page.html" class="nav-link">首页</a></li>
+            <li class="dropdown">
+                <a href="#" class="nav-link">历史资料</a>
+                <div class="dropdown-content">
+                    <a href="history-background.html" class="nav-link">历史背景</a>
+                    <a href="movement-process.html" class="nav-link">运动过程</a>
+                    <a href="historical-significance.html" class="nav-link">历史意义</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="nav-link active">文献资料</a>
+                <div class="dropdown-content">
+                    <a href="original-documents.html" class="nav-link">原始文献</a>
+                    <a href="research-papers.html" class="nav-link active">研究论文</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="nav-link">多媒体</a>
+                <div class="dropdown-content">
+                    <a href="historical-photos.html" class="nav-link">历史图片</a>
+                    <a href="video-materials.html" class="nav-link">视频资料</a>
+                </div>
+            </li>
+            <li><a href="about-us.html" class="nav-link">关于我们</a></li>
+        </ul>
+    </div>
+        
+        <!-- 页面标题 -->
+        <div class="page-header" style="text-align: center; margin-bottom: 1.5rem;">
+            <h2 style="font-size: 2rem; color: var(--primary-color);">一二一运动研究论文</h2>
+            <p style="color: #666; margin-top: 0.5rem;">学术研究成果汇编</p>
+        </div>
+        
+        <!-- 搜索和筛选区域 -->
+        <div class="search-bar">
+            <input type="text" placeholder="搜索论文标题、作者或关键词...">
+            <button>搜索</button>
+        </div>
+        
+        <div class="filter-options">
+            <button class="filter-btn active">全部</button>
+            <button class="filter-btn">运动历史</button>
+            <button class="filter-btn">历史意义</button>
+            <button class="filter-btn">人物事件</button>
+            <button class="filter-btn">精神传承</button>
+            <button class="filter-btn">最新研究</button>
+        </div>
+        
+        <!-- 研究论文内容区域 -->
+        <div class="papers-content" style="background-color: white; border-radius: 8px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            
+            <!-- 第一部分：运动历史研究 -->
+            <h3 class="category-header">运动历史研究</h3>
+            <div class="papers-container">
+                <!-- 论文1 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">历史研究</span>
+                        <h3 class="paper-title">论"一二·一"运动的意义和基本经验</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">李申文</span>
+                            <span>1995年</span>
+                        </div>
+                        <p class="paper-abstract">"一二·一"运动是抗战胜利后在中国共产党领导下为争取和平民主而发展起来的一次爱国学生运动。它吹响了反内战、争民主的号角,揭露了蒋介石国民党的独裁、内战政策;扩大了中国共产党的影响,提高了中国共产党的威信;锻炼了中国学生运动的一批骨干...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                        <!-- 这里可以添加原始文件地址，例如：
+                        <a href="papers/论一二一运动的意义和基本经验_李申文.pdf" class="paper-link" download>下载PDF</a>
+                        -->
+                    </div>
+                </div>
+                
+                <!-- 论文2 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">历史研究</span>
+                        <h3 class="paper-title">论"一二一"运动</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">沙健孙</span>
+                            <span>1985年</span>
+                        </div>
+                        <p class="paper-abstract">在第三次国内革命战争时期，中国境内存在着两条战线。国民党反动军队和人民解放军的战争，这是第一条战线;与这条主要的战线相配合，还有第二条战线，这就是伟大的正义的学生运动和国民党反动政府之间的尖锐斗争。这个第二条战线的形成，经历了一个过程...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                    </div>
+                </div>
+                
+                <!-- 论文3 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">历史研究</span>
+                        <h3 class="paper-title">关于一二一运动的几个问题</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">成实</span>
+                            <span>1986年</span>
+                        </div>
+                        <p class="paper-abstract">在解放战争时期，以昆明学生为主体的一二一运动，是一次以反对内战，争取和平;反对独裁、争取民主为中心内容和奋斗目标的伟大的爱国民主运动。这次运动是在中国共产党的领导下进行的，斗争锋芒直接指向蒋介石集团的内战、独裁、分裂政策和法西斯统治...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第二部分：历史意义研究 -->
+            <h3 class="category-header">历史意义研究</h3>
+            <div class="papers-container">
+                <!-- 论文4 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">意义研究</span>
+                        <h3 class="paper-title">"一二·一"运动的历史意义和现实意义</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">蒋中礼</span>
+                            <span>1988年</span>
+                        </div>
+                        <p class="paper-abstract">"一二·一"运动是抗日战争胜利后在中国共产党领导下为争取和平民主而发展起来的一次爱国学生运动。它在中国现代革命史上占有重要的一页，在中国青年运动史上是继"五·四"运动和"一二·九"运动之后的又一光辉篇章。它是我们进行革命传统教育、爱国主义和社会主义教育的生动教材...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                    </div>
+                </div>
+                
+                <!-- 论文5 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">意义研究</span>
+                        <h3 class="paper-title">论精神的价值与传承——写在"一二·一"运动七十周年</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">庄倩琳</span>
+                            <span>2016年</span>
+                        </div>
+                        <p class="paper-abstract">"一二·一"运动是抗战胜利后在中国共产党领导下为争取和平民主而发展起来的一次爱国学生运动。它在中国现代革命史上占有重要的一页，在中国青年运动史上是继"五·四"运动和"一二·九"运动之后的又一光辉篇章。它是我们进行革命传统教育、爱国主义和社会主义教育的生动教材...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                    </div>
+                </div>
+                
+                <!-- 论文6 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">意义研究</span>
+                        <h3 class="paper-title">"一二·一"精神的当代思考——纪念"一二·一"运动60周年</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">包云燕,方绍勤,张团娅</span>
+                            <span>2006年</span>
+                        </div>
+                        <p class="paper-abstract">"一二·一"运动是抗战胜利后在中国共产党领导下为争取和平民主而发展起来的一次爱国学生运动。它在中国现代革命史上占有重要的一页，在中国青年运动史上是继"五·四"运动和"一二·九"运动之后的又一光辉篇章。它是我们进行革命传统教育、爱国主义和社会主义教育的生动教材...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第三部分：人物与事件研究 -->
+            <h3 class="category-header">人物与事件研究</h3>
+            <div class="papers-container">
+                <!-- 论文7 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">人物研究</span>
+                        <h3 class="paper-title">李宗黄与昆明"一二·一"运动</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">杨丽萍</span>
+                            <span>2016年</span>
+                        </div>
+                        <p class="paper-abstract">"一二·一"运动是抗战胜利后在中国共产党领导下为争取和平民主而发展起来的一次爱国学生运动。它在中国现代革命史上占有重要的一页，在中国青年运动史上是继"五·四"运动和"一二·九"运动之后的又一光辉篇章。它是我们进行革命传统教育、爱国主义和社会主义教育的生动教材...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                    </div>
+                </div>
+                
+                <!-- 论文8 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">人物研究</span>
+                        <h3 class="paper-title">郑伯克与一二•一运动</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">汪绍铨</span>
+                            <span>2016年</span>
+                        </div>
+                        <p class="paper-abstract">"一二·一"运动是抗战胜利后在中国共产党领导下为争取和平民主而发展起来的一次爱国学生运动。它在中国现代革命史上占有重要的一页，在中国青年运动史上是继"五·四"运动和"一二·九"运动之后的又一光辉篇章。它是我们进行革命传统教育、爱国主义和社会主义教育的生动教材...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                    </div>
+                </div>
+                
+                <!-- 论文9 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">事件研究</span>
+                        <h3 class="paper-title">"一二·一"惨案的幕后真相</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">汪幸福</span>
+                            <span>2007年</span>
+                        </div>
+                        <p class="paper-abstract">"一二·一"运动是抗战胜利后在中国共产党领导下为争取和平民主而发展起来的一次爱国学生运动。它在中国现代革命史上占有重要的一页，在中国青年运动史上是继"五·四"运动和"一二·九"运动之后的又一光辉篇章。它是我们进行革命传统教育、爱国主义和社会主义教育的生动教材...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第四部分：精神传承研究 -->
+            <h3 class="category-header">精神传承研究</h3>
+            <div class="papers-container">
+                <!-- 论文10 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">传承研究</span>
+                        <h3 class="paper-title">试论继承发扬"一二·一"运动的光荣传统</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">许琤</span>
+                            <span>1995年</span>
+                        </div>
+                        <p class="paper-abstract">"一二·一"运动是抗战胜利后在中国共产党领导下为争取和平民主而发展起来的一次爱国学生运动。它在中国现代革命史上占有重要的一页，在中国青年运动史上是继"五·四"运动和"一二·九"运动之后的又一光辉篇章。它是我们进行革命传统教育、爱国主义和社会主义教育的生动教材...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                    </div>
+                </div>
+                
+                <!-- 论文11 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">传承研究</span>
+                        <h3 class="paper-title">一二·一运动与当代大学生社会角色认知</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">李小娜</span>
+                            <span>2007年</span>
+                        </div>
+                        <p class="paper-abstract">"一二·一"运动是抗战胜利后在中国共产党领导下为争取和平民主而发展起来的一次爱国学生运动。它在中国现代革命史上占有重要的一页，在中国青年运动史上是继"五·四"运动和"一二·九"运动之后的又一光辉篇章。它是我们进行革命传统教育、爱国主义和社会主义教育的生动教材...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                    </div>
+                </div>
+                
+                <!-- 论文12 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">传承研究</span>
+                        <h3 class="paper-title">再论青年运动的方向——从纪念"五·四"、"一二·九"、"一二·一"运动说开去</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">雷希</span>
+                            <span>2008年</span>
+                        </div>
+                        <p class="paper-abstract">"一二·一"运动是抗战胜利后在中国共产党领导下为争取和平民主而发展起来的一次爱国学生运动。它在中国现代革命史上占有重要的一页，在中国青年运动史上是继"五·四"运动和"一二·九"运动之后的又一光辉篇章。它是我们进行革命传统教育、爱国主义和社会主义教育的生动教材...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第五部分：最新研究成果 -->
+            <h3 class="category-header">最新研究成果</h3>
+            <div class="papers-container">
+                <!-- 论文13 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">最新研究</span>
+                        <h3 class="paper-title">闻一多所撰《"一二·一"运动始末记》档案文献</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">黄燕玲</span>
+                            <span>2023年</span>
+                        </div>
+                        <p class="paper-abstract">"一二·一"运动是抗战胜利后在中国共产党领导下为争取和平民主而发展起来的一次爱国学生运动。它在中国现代革命史上占有重要的一页，在中国青年运动史上是继"五·四"运动和"一二·九"运动之后的又一光辉篇章。它是我们进行革命传统教育、爱国主义和社会主义教育的生动教材...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                    </div>
+                </div>
+                
+                <!-- 论文14 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">最新研究</span>
+                        <h3 class="paper-title">钱瑛与第二条战线的开辟(一)指导一二·一运动</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">杨力仁</span>
+                            <span>2022年</span>
+                        </div>
+                        <p class="paper-abstract">"一二·一"运动是抗战胜利后在中国共产党领导下为争取和平民主而发展起来的一次爱国学生运动。它在中国现代革命史上占有重要的一页，在中国青年运动史上是继"五·四"运动和"一二·九"运动之后的又一光辉篇章。它是我们进行革命传统教育、爱国主义和社会主义教育的生动教材...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                    </div>
+                </div>
+                
+                <!-- 论文15 -->
+                <div class="paper-card">
+                    <div class="paper-header">
+                        <span class="paper-type">最新研究</span>
+                        <h3 class="paper-title">小说《红岩》里的人物与"一二·一"运动前后云南地下党活动</h3>
+                    </div>
+                    <div class="paper-content">
+                        <div class="paper-meta">
+                            <span class="paper-author">龙成鹏</span>
+                            <span>2020年</span>
+                        </div>
+                        <p class="paper-abstract">"一二·一"运动是抗战胜利后在中国共产党领导下为争取和平民主而发展起来的一次爱国学生运动。它在中国现代革命史上占有重要的一页，在中国青年运动史上是继"五·四"运动和"一二·九"运动之后的又一光辉篇章。它是我们进行革命传统教育、爱国主义和社会主义教育的生动教材...</p>
+                        <a href="#" class="paper-link">阅读全文</a>
+                    </div>
+                </div>
+            </div>
+            
+        <!-- 分页导航 -->
+        <ul class="pagination">
+            <li><a href="#" class="active">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">下一页 &raquo;</a></li>
+        </ul>
+        </div>
+    </div>
+    
+    <!-- 页脚 - 与首页相同 -->
+    <div class="footer">
+        <p>© 2025 一二一运动数字档案库 版权所有</p>
+    </div>
+    
+    <!-- JavaScript - 与首页相同 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取当前页面路径
+            const currentPath = window.location.pathname.split('/').pop();
+            
+            // 设置活动导航项
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath || 
+                    (currentPath === 'home page.html' && link.getAttribute('href') === 'home page.html')) {
+                    link.classList.add('active');
+                    
+                    // 如果是下拉菜单项，激活父菜单
+                    if (link.parentElement.parentElement.classList.contains('dropdown-content')) {
+                        const parentLink = link.closest('.dropdown').querySelector('.nav-link');
+                        if (parentLink) parentLink.classList.add('active');
+                    }
+                }
+            });
+            
+            // 搜索功能
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value.trim().toLowerCase();
+                    if (searchTerm) {
+                        alert(`正在搜索: ${searchTerm}`);
+                        // 实际项目中可以跳转到搜索结果页面s
+                    }
+                }
+            });
+            
+            // 筛选按钮功能
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // 给当前点击的按钮添加active类
+                    this.classList.add('active');
+                    // 这里可以添加实际的筛选逻辑
+                });
+            });
+        });
+    </script>
+</body>
+</html>

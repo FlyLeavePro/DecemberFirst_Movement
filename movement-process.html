@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- 保持与首页完全相同的head部分 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一二一运动 - 运动过程</title>
+            <style>
+            :root {
+                font-size: 20px;
+                --primary-color: #b90404; /* 标准红色 */
+                --secondary-color: #3498db;
+                --dark-color: rgb(207, 160, 77);
+                --light-color: #ecf0f13c;
+                --accent-color: #e74c3c;
+            }
+        
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            
+            body {
+                font-family: '华文新魏', Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                background-image: url('https://bpic.588ku.com/back_pic/05/98/71/475ef75d14caa09.jpg');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            }
+    
+            .header {
+                font-size: 34px; 
+                background-color: var(--dark-color);
+                color: white;
+                padding: 1rem;
+                text-align: center;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                position: relative;
+            }
+            
+            .search-container {
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            .search-box {
+                padding: 8px 15px;
+                border-radius: 20px;
+                border: none;
+                outline: none;
+                width: 200px;
+                transition: width 0.3s ease;
+            }
+            
+            .search-box:focus {
+                width: 250px;
+            }
+            
+            .nav-container {
+                background-color: var(--primary-color);
+                padding: 0.5rem 0;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            
+            .nav-menu {
+                display: flex;
+                justify-content: center;
+                list-style: none;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 1rem;
+            }
+            
+            .nav-menu li {
+                margin: 0 1rem;
+                position: relative;
+            }
+            
+            .nav-menu a {
+                color: white;
+                text-decoration: none;
+                font-weight: bold;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                transition: all 0.3s ease;
+                display: block;
+            }
+            
+            .nav-menu a:hover, .nav-menu a.active {
+                background-color: rgba(255,255,255,0.2);
+            }
+            
+            /* 下拉菜单样式 */
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: white;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+                border-radius: 4px;
+                top: 100%;
+                left: 0;
+            }
+            
+            .dropdown-content a {
+                color: var(--dark-color);
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                transition: background-color 0.3s;
+            }
+            
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+            
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+            
+            .container {
+                display: flex;
+                flex-direction: column;
+                min-height: calc(100vh - 150px);
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 1rem;
+            }
+            
+            .home-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 2rem;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                margin-bottom: 2rem;
+            }
+            
+            .home-content h2 {
+                color: var(--primary-color);
+                margin-bottom: 1rem;
+            }
+            
+            .home-content p {
+                margin-bottom: 1.5rem;
+                max-width: 800px;
+            }
+            
+            .card-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            
+            .card {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                overflow: hidden;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+            
+            .card-img {
+                height: 180px;
+                background-color: var(--light-color);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                color: var(--primary-color);
+                background-size: cover;
+                background-position: center;
+            }
+            
+            .card-content {
+                padding: 1.5rem;
+            }
+            
+            .card-content h3 {
+                color: var(--dark-color);
+                margin-bottom: 0.5rem;
+            }
+            
+            .card-content p {
+                margin-bottom: 1rem;
+                color: #666;
+            }
+            
+            .btn {
+                display: inline-block;
+                background-color: var(--primary-color);
+                color: white;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+                border: none;
+                cursor: pointer;
+            }
+            
+            .btn:hover {
+                background-color: var(--secondary-color);
+            }
+            
+            /* 分页导航样式 */
+            .pagination {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+                list-style: none;
+            }
+            
+            .pagination li {
+                margin: 0 5px;
+            }
+            
+            .pagination a {
+                display: inline-block;
+                padding: 8px 16px;
+                background-color: white;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                color: var(--primary-color);
+                text-decoration: none;
+                transition: all 0.3s;
+            }
+            
+            .pagination a:hover {
+                background-color: var(--primary-color);
+                color: white;
+                border-color: var(--primary-color);
+            }
+            
+            .pagination a.active {
+                background-color: var(--primary-color);
+                color: white;
+                border-color: var(--primary-color);
+            }
+            
+            .footer {
+                background-color: var(--dark-color);
+                color: white;
+                text-align: center;
+                padding: 1rem;
+                margin-top: auto;
+            }
+            
+            /* 响应式设计 */
+            @media (max-width: 768px) {
+                .nav-menu {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                
+                .nav-menu li {
+                    margin: 0.5rem 0;
+                    width: 100%;
+                    text-align: center;
+                }
+                
+                .card-container {
+                    grid-template-columns: 1fr;
+                }
+                
+                .search-container {
+                    position: static;
+                    transform: none;
+                    margin-top: 10px;
+                    width: 100%;
+                    text-align: center;
+                }
+                
+                .search-box {
+                    width: 80%;
+                }
+                
+                .dropdown-content {
+                    position: static;
+                    width: 100%;
+                    box-shadow: none;
+                }
+            }
+        </style>
+    
+</head>
+<body>
+    <!-- 头部区域 - 与首页相同 -->
+    <div class="header">
+        <h1>一二一运动</h1>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="搜索内容..." id="searchInput">
+        </div>
+    </div>
+    
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <li><a href="home page.html" class="nav-link ">首页</a></li>
+            <li class="dropdown">
+                <a href="#" class="nav-link active">历史资料</a>
+                <div class="dropdown-content">
+                    <a href="history-background.html" class="nav-link">历史背景</a>
+                    <a href="movement-process.html" class="nav-link">运动过程</a>
+                    <a href="historical-significance.html" class="nav-link">历史意义</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="nav-link">文献资料</a>
+                <div class="dropdown-content">
+                    <a href="original-documents.html" class="nav-link">原始文献</a>
+                    <a href="research-papers.html" class="nav-link">研究论文</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="nav-link">多媒体</a>
+                <div class="dropdown-content">
+                    <a href="historical-photos.html" class="nav-link">历史图片</a>
+                    <a href="video-materials.html" class="nav-link">视频资料</a>
+                </div>
+            </li>
+            <li><a href="about-us.html" class="nav-link">关于我们</a></li>
+        </ul>
+    </div>
+    
+
+        
+        <!-- 页面标题 -->
+        <div class="page-header" style="text-align: center; margin-bottom: 2rem;">
+            <h2 style="font-size: 2rem; color: var(--primary-color);">一二一运动过程</h2>
+            <p style="color: #666; margin-top: 0.5rem;">1945年11月25日 - 1946年3月17日</p>
+        </div>
+        
+        <!-- 运动过程内容区域 -->
+        <div class="movement-content" style="background-color: white; border-radius: 8px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            
+            <!-- 时间线导航 -->
+            <div class="timeline-nav" style="margin-bottom: 2rem; padding: 1rem; background-color: var(--light-color); border-radius: 4px;">
+                <h3 style="color: var(--dark-color); margin-bottom: 1rem;">运动关键节点</h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                    <a href="#section1" class="btn" style="background-color: var(--dark-color);">反内战时事晚会</a>
+                    <a href="#section2" class="btn" style="background-color: var(--dark-color);">学生总罢课</a>
+                    <a href="#section3" class="btn" style="background-color: var(--dark-color);">"一二·一"惨案</a>
+                    <a href="#section4" class="btn" style="background-color: var(--dark-color);">灵堂公祭</a>
+                    <a href="#section5" class="btn" style="background-color: var(--dark-color);">停灵复课</a>
+                    <a href="#section6" class="btn" style="background-color: var(--dark-color);">四烈士出殡</a>
+                </div>
+            </div>
+            
+            <!-- 第一部分：反内战时事晚会 -->
+            <section id="section1" style="margin-bottom: 3rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem;">
+                <h3 style="color: var(--dark-color); margin-bottom: 1rem; display: flex; align-items: center;">
+                    <span style="background-color: var(--primary-color); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem; margin-right: 0.8rem;">1945.11.25</span>
+                    反内战时事晚会
+                </h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            1945年11月25日，西南联大、云南大学、中法大学和英语专科学校四校学生自治会发起，在云大至公堂举办反内战时事讲演晚会。李宗黄、关麟征闻讯后发布禁令，强迫云大校方不准借给会场。
+                        </p>
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            晚会改在西南联大图书馆前大草坪举行，到会各大中学师生及社会人士6千多人。钱端升、伍启元、费孝通、潘大逵四教授发表演讲，主张迅速制止内战，成立民主联合政府。
+                        </p>
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            国民党中央第五军军长邱清泉的军队包围联大校本部，发射机关枪和小钢炮进行恫吓，特务切断电线。费孝通教授激昂呼喊："不但在黑暗中我们要呼吁和平；在枪声中我们还是要呼吁和平！"听众高呼："用我们的声音反对枪声！"
+                        </p>
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <div style="text-align: center; margin: 1rem 0;">
+                            <img src="https://www.tsinghua.edu.cn/_mediafile/qh2021b/publish/news/4205/20151210/82161449724458261.jpg" alt="反内战时事晚会" style="max-width: 100%; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                            <p style="font-size: 0.8rem; color: #666; margin-top: 0.5rem;">反内战时事晚会场景</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 第二部分：学生总罢课 -->
+            <section id="section2" style="margin-bottom: 3rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem;">
+                <h3 style="color: var(--dark-color); margin-bottom: 1rem; display: flex; align-items: center;">
+                    <span style="background-color: var(--primary-color); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem; margin-right: 0.8rem;">1945.11.26</span>
+                    学生总罢课
+                </h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            11月26日，国民党中央社发出"西郊匪警，黑夜枪声"的消息，诬蔑时事晚会。联大学生率先罢课抗议，云南大学、中法大学、昆华工校、昆华农校等18所大中学学生相继罢课。
+                        </p>
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            28日，罢课学校达31所。昆明学联组成昆明市大中学校罢课联合委员会("罢联")，发出《昆明市大中学生为反对内战及抗议武装干涉集会告全国同胞书》(即"罢课宣言")。
+                        </p>
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            宣言提出政治主张：立即制止内战，要求撤退驻华美军；组织民主联合政府；切实保障人民自由。并向国民党云南当局提出四项具体要求：追究射击联大的责任；取消禁止集会游行的非法禁令；保障同学身体自由；中央社改正诬蔑联大之荒谬谣言。
+                        </p>
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <div style="text-align: center; margin: 1rem 0;">
+                            <img src="https://pic.baike.soso.com/ugc/baikepic2/19002/20160912160717-2018922690.jpg/300" alt="学生罢课" style="max-width: 100%; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                            <p style="font-size: 0.8rem; color: #666; margin-top: 0.5rem;">学生罢课游行</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 第三部分："一二·一"惨案 -->
+            <section id="section3" style="margin-bottom: 3rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem;">
+                <h3 style="color: var(--dark-color); margin-bottom: 1rem; display: flex; align-items: center;">
+                    <span style="background-color: var(--primary-color); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem; margin-right: 0.8rem;">1945.12.1</span>
+                    "一二·一"惨案
+                </h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            12月1日上午，李宗黄在国民党省党部向党徒训话，要他们"效忠党国"，"以流血对流血"。特务暴徒携带棍棒、铁条、刺刀、手榴弹，分头攻打学校。
+                        </p>
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            南菁中学教师于再(共产党员)阻拦暴徒投掷手榴弹，头部被炸成重伤牺牲。联大师院学生李鲁连头部中弹身亡。昆华工校学生张华昌被炸，师院女生潘琰(共产党员)被炸倒地后，特务用尖头铁条向她腹部猛刺三下，两人均因伤势过重牺牲。联大学生缪祥烈被炸伤后截去左腿。
+                        </p>
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            当日共有于再、潘琰、李鲁连、张华昌4人牺牲，重伤25人，轻伤30余人。延安《解放日报》称这是"1926年'三·一八'惨案以来，将近20年间所没有发生过的大惨案"。
+                        </p>
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <div style="text-align: center; margin: 1rem 0;">
+                            <img src="https://today.help.bj.cn/12/1/1945/02233242939.jpg" alt="一二一惨案" style="max-width: 100%; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                            <p style="font-size: 0.8rem; color: #666; margin-top: 0.5rem;">"一二·一"惨案现场</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 第四部分：灵堂公祭与全国声援 -->
+            <section id="section4" style="margin-bottom: 3rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem;">
+                <h3 style="color: var(--dark-color); margin-bottom: 1rem; display: flex; align-items: center;">
+                    <span style="background-color: var(--primary-color); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem; margin-right: 0.8rem;">1945.12.2-24</span>
+                    灵堂公祭与全国声援
+                </h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            12月2日为四烈士举行入殓仪式，各校师生和各界群众六千多人参加。从12月4日起在联大图书馆设立灵堂举行公祭。四烈士画像前挂着"党国所赐"四个大字，墙上张贴着上千幅挽联、挽诗。
+                        </p>
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            在一个半月内，参加灵堂公祭的团体单位近700个，达15万人次(当时昆明人口约30万)。灵堂成了控诉反动派，教育人民、激励斗志的大课堂。
+                        </p>
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            全国各地纷纷声援昆明学生。重庆、成都、上海等地举行追悼会和游行示威。延安《解放日报》发表社论《昆明惨案》指出："昆明学生与教授的命运，也就是全国人民的命运"。美国、英国一些报刊、电台也报道了昆明惨案。
+                        </p>
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <div style="text-align: center; margin: 1rem 0;">
+                            <img src="https://x0.ifengimg.com/ucms/2021_07/CDAC9C3C225C8A77B9B5CB1D0E51127DF8B63EFA_size60_w640_h360.jpg" alt="灵堂公祭" style="max-width: 100%; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                            <p style="font-size: 0.8rem; color: #666; margin-top: 0.5rem;">灵堂公祭场景</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 第五部分：停灵复课与斗争胜利 -->
+            <section id="section5" style="margin-bottom: 3rem; border-bottom: 1px solid #eee; padding-bottom: 1.5rem;">
+                <h3 style="color: var(--dark-color); margin-bottom: 1rem; display: flex; align-items: center;">
+                    <span style="background-color: var(--primary-color); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem; margin-right: 0.8rem;">1945.12.25</span>
+                    停灵复课与斗争胜利
+                </h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            在中共中央南方局领导和云南省工委决策下，"罢联"决定只要大部分条件得到国民党政府接受，即可采取"停灵复课"方式，以利积蓄和发展力量。
+                        </p>
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            12月24日，李宗黄在万众声讨中调离昆明。梅贻琦、熊庆来举行记者招待会，报告"一二·一"惨案真相，澄清了中央社造谣诬蔑运动的消息言论。
+                        </p>
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            12月25日，全市大中学校学生自治会一致通过《复课宣言》，声明为顾全大局，在五项条件已得到基本解决的情况下，忍痛抑悲，停灵复课，待李宗黄受到撤职处置后，再确定为四烈士出殡日期。
+                        </p>
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <div style="text-align: center; margin: 1rem 0;">
+                            <img src="https://p1.ssl.qhimg.com/dr/270_500_/t018def92f57ad539ee.jpg?size=268x270" alt="复课宣言" style="max-width: 100%; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                            <p style="font-size: 0.8rem; color: #666; margin-top: 0.5rem;">学生复课场景</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 第六部分：四烈士盛大出殡 -->
+            <section id="section6" style="margin-bottom: 2rem;">
+                <h3 style="color: var(--dark-color); margin-bottom: 1rem; display: flex; align-items: center;">
+                    <span style="background-color: var(--primary-color); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.9rem; margin-right: 0.8rem;">1946.3.17</span>
+                    四烈士盛大出殡
+                </h3>
+                <div style="display: flex; flex-wrap: wrap; gap: 1.5rem;">
+                    <div style="flex: 1; min-width: 300px;">
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            3月17日，昆明隆重举行四烈士盛大出殡，实际是一次抗议控诉国民党法西斯罪行的示威游行。出殡行列以"一二·一死难四烈士殡仪"的横幅布标为前导，撞击自由钟开路。
+                        </p>
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            昆明3万余名大中学师生和各界人士组成殡仪队伍，佩戴黑纱白花，簇拥着四烈士灵车、像亭，举着"民主使徒"、"你们死了，还有我们"等大标语牌，庄严肃穆地通过昆明主要街道。
+                        </p>
+                        <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                            下午，殡仪队伍回到西南联大校本部，举行公葬四烈士仪式，闻一多、吴晗教授作了悲愤的讲话。学联代表3万多群众在烈士墓前宣誓："安息吧，勇士!我们将以更坚决的步伐前进，我们要集中一切力量，向反动的中国法西斯余孽痛击!"
+                        </p>
+                    </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <div style="text-align: center; margin: 1rem 0;">
+                            <img src="https://www.sizhengwang.cn/upload/resources/image/2021/05/25/594897.jpg?1661974264902" alt="四烈士出殡" style="max-width: 100%; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                            <p style="font-size: 0.8rem; color: #666; margin-top: 0.5rem;">四烈士出殡场景</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- 相关链接 -->
+            <div style="margin-top: 3rem; border-top: 1px solid #eee; padding-top: 1.5rem;">
+                <h4 style="color: var(--primary-color); margin-bottom: 1rem;">相关内容</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                    <a href="history-background.html" class="btn" style="background-color: var(--dark-color);">历史背景</a>
+                    <a href="historical-significance.html" class="btn" style="background-color: var(--dark-color);">历史意义</a>
+                    <a href="original-documents.html" class="btn" style="background-color: var(--dark-color);">原始文献</a>
+                    <a href="historical-photos.html" class="btn" style="background-color: var(--dark-color);">历史图片</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 页脚 - 与首页相同 -->
+    <div class="footer">
+        <p>© 2025 一二一运动数字档案库 版权所有</p>
+    </div>
+    
+    <!-- JavaScript - 与首页相同 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取当前页面路径
+            const currentPath = window.location.pathname.split('/').pop();
+            
+            // 设置活动导航项
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath || 
+                    (currentPath === 'home page.html' && link.getAttribute('href') === 'home page.html')) {
+                    link.classList.add('active');
+                    
+                    // 如果是下拉菜单项，激活父菜单
+                    if (link.parentElement.parentElement.classList.contains('dropdown-content')) {
+                        const parentLink = link.closest('.dropdown').querySelector('.nav-link');
+                        if (parentLink) parentLink.classList.add('active');
+                    }
+                }
+            });
+            
+            // 搜索功能
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value.trim().toLowerCase();
+                    if (searchTerm) {
+                        alert(`正在搜索: ${searchTerm}`);
+                        // 实际项目中可以跳转到搜索结果页面
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

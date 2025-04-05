@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- 保持与首页完全相同的head部分 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一二一运动 - 视频资料</title>
+    <style>
+        /* 保持与首页完全相同的CSS样式 */
+        :root {
+                font-size: 20px;
+                --primary-color: #b90404; /* 标准红色 */
+                --secondary-color: #3498db;
+                --dark-color: rgb(207, 160, 77);
+                --light-color: #ecf0f13c;
+                --accent-color: #e74c3c;
+            }
+        
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            
+            body {
+                font-family: '华文新魏', Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                background-image: url('https://bpic.588ku.com/back_pic/05/98/71/475ef75d14caa09.jpg');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            }
+    
+            .header {
+                font-size: 34px; 
+                background-color: var(--dark-color);
+                color: white;
+                padding: 1rem;
+                text-align: center;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                position: relative;
+            }
+            
+            .search-container {
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            .search-box {
+                padding: 8px 15px;
+                border-radius: 20px;
+                border: none;
+                outline: none;
+                width: 200px;
+                transition: width 0.3s ease;
+            }
+            
+            .search-box:focus {
+                width: 250px;
+            }
+            
+            .nav-container {
+                background-color: var(--primary-color);
+                padding: 0.5rem 0;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            
+            .nav-menu {
+                display: flex;
+                justify-content: center;
+                list-style: none;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 1rem;
+            }
+            
+            .nav-menu li {
+                margin: 0 1rem;
+                position: relative;
+            }
+            
+            .nav-menu a {
+                color: white;
+                text-decoration: none;
+                font-weight: bold;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                transition: all 0.3s ease;
+                display: block;
+            }
+            
+            .nav-menu a:hover, .nav-menu a.active {
+                background-color: rgba(255,255,255,0.2);
+            }
+            
+            /* 下拉菜单样式（保持不变） */
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: white;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+                border-radius: 4px;
+                top: 100%;
+                left: 0;
+            }
+
+            .dropdown-content a {
+                color: var(--dark-color);
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                transition: background-color 0.3s;
+            }
+
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+
+            /* 新增：三级菜单样式（右侧展开，保持原风格） */
+            .dropdown-submenu {
+                position: relative; /* 确保三级菜单定位正确 */
+            }
+
+            .dropdown-submenu .submenu-content {
+                display: none;
+                position: absolute;
+                left: 100%;        /* 从二级菜单右侧弹出 */
+                top: 0;            /* 对齐二级菜单顶部 */
+                background-color: white;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                border-radius: 4px;
+                z-index: 2;         /* 确保三级菜单覆盖二级菜单 */
+            }
+
+            /* 悬停时显示三级菜单 */
+            .dropdown-submenu:hover .submenu-content {
+                display: block;
+            }
+
+            /* 保持链接样式一致 */
+            .submenu-content a {
+                color: var(--dark-color);
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                transition: background-color 0.3s;
+            }
+
+            .submenu-content a:hover {
+                background-color: #f1f1f1;
+            }
+        
+        /* 新增视频资料页面特有样式 */
+        .videos-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .video-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .video-card:hover {
+            transform: translateY(-5px);
+        }
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 比例 */
+            overflow: hidden;
+        }
+        .video-thumbnail img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .video-play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background-color: rgba(0,0,0,0.7);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        .video-play-btn::after {
+            content: "";
+            display: block;
+            width: 0;
+            height: 0;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+            border-left: 25px solid white;
+            margin-left: 5px;
+        }
+        .video-content {
+            padding: 1.25rem;
+        }
+        .video-title {
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .video-meta {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        .video-author {
+            font-style: italic;
+        }
+        .video-description {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .video-link {
+            display: inline-block;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            text-decoration: none;
+            border-bottom: 1px dashed var(--primary-color);
+            transition: all 0.2s ease;
+        }
+        .video-link:hover {
+            color: var(--dark-color);
+            border-bottom-color: var(--dark-color);
+        }
+        .category-header {
+            margin: 2.5rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--light-color);
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        .search-bar {
+            margin: 1.5rem 0;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .search-bar button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .search-bar button:hover {
+            background-color: var(--dark-color);
+        }
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            list-style: none;
+        }
+        .pagination li {
+            margin: 0 5px;
+        }
+        .pagination a {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        .pagination a:hover, .pagination a.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .lightbox-content {
+            width: 80%;
+            max-width: 900px;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        .lightbox-caption {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            padding: 10px;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .video-player {
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 比例 */
+            position: relative;
+        }
+        .video-player iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部区域 - 与首页相同 -->
+    <div class="header">
+        <h1>一二一运动</h1>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="搜索内容..." id="searchInput">
+        </div>
+    </div>
+    
+        <!-- 导航栏 - 与首页相同 -->
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li><a href="home page.html" class="nav-link">首页</a></li>
+                <li class="dropdown">
+                    <a href="#" class="nav-link">历史资料</a>
+                    <div class="dropdown-content">
+                        <a href="history-background.html" class="nav-link active">历史背景</a>
+                        <a href="movement-process.html" class="nav-link">运动过程</a>
+                        <a href="historical-significance.html" class="nav-link">历史意义</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="nav-link ">文献资料</a>
+                    <div class="dropdown-content">
+                        <a href="original-documents.html" class="nav-link">原始文献</a>
+                        <a href="research-papers.html" class="nav-link">研究论文</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="nav-link active">多媒体</a>
+                    <div class="dropdown-content">
+                        <!-- 二级菜单：历史图片（带三级子菜单） -->
+                        <div class="dropdown-submenu">
+                            <a href="historical-photos.html" class="nav-link">历史图片</a>
+                            <!-- 三级菜单（右侧展开） -->
+                            <div class="submenu-content">
+                                <a href="historical-photos.html" class="nav-link active">图像档案</a>
+                                <a href="https://www.hswh.org.cn/wzzx/gmdb/2013-12-28/24360.html" class="nav-link">纪念馆</a>
+                            </div>
+                        </div>
+                        <a href="video-materials.html" class="nav-link">视频资料</a>
+                    </div>
+                </li>
+                <li><a href="about-us.html" class="nav-link">关于我们</a></li>
+            </ul>
+        </div>
+        
+        <!-- 页面标题 -->
+        <div class="page-header" style="text-align: center; margin-bottom: 1.5rem;">
+            <h2 style="font-size: 2rem; color: var(--primary-color);">一二一运动视频资料</h2>
+        </div>
+        
+        <!-- 搜索和筛选区域 -->
+        <div class="search-bar">
+            <input type="text" placeholder="搜索视频标题、描述或关键词...">
+            <button>搜索</button>
+        </div>
+        
+        <div class="filter-options">
+            <button class="filter-btn active">全部</button>
+            <button class="filter-btn">纪录片</button>
+            <button class="filter-btn">纪念活动</button>
+            <button class="filter-btn">口述历史</button>
+            <button class="filter-btn">学术讲座</button>
+        </div>
+        
+        <!-- 视频资料内容区域 -->
+        <div class="videos-content" style="background-color: white; border-radius: 8px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            
+            <!-- 第一部分：纪录片与专题片 -->
+            <h3 class="category-header">纪录片与专题片</h3>
+            <div class="videos-container">
+                <!-- 视频1 -->
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://example.com/placeholder1.jpg" alt="一二一运动纪录片">
+                        <!-- 实际部署时替换为真实视频缩略图链接，例如：
+                        <img src="images/纪录片1.jpg" alt="一二一运动纪录片">
+                        -->
+                        <div class="video-play-btn" data-video-id="video1"></div>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">《一二一运动》纪录片</h3>
+                        <div class="video-meta">
+                            <span class="video-author">云南电视台</span>
+                            <span>2020年</span>
+                        </div>
+                        <p class="video-description">本片全面记录了一二一运动的历史背景、发展过程和深远影响，包含大量珍贵历史影像资料和专家访谈。</p>
+                        <a href="#" class="video-link">查看详情</a>
+                        <!-- 这里可以添加原始视频文件地址，例如：
+                        <a href="videos/一二一运动纪录片.mp4" class="video-link" download>下载视频</a>
+                        -->
+                    </div>
+                </div>
+                
+                <!-- 视频2 -->
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://example.com/placeholder2.jpg" alt="闻一多专题片">
+                        <div class="video-play-btn" data-video-id="video2"></div>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">《闻一多与一二一运动》专题片</h3>
+                        <div class="video-meta">
+                            <span class="video-author">中央电视台</span>
+                            <span>2018年</span>
+                        </div>
+                        <p class="video-description">讲述闻一多先生在一二一运动中的重要作用，以及他撰写的《一二·一运动始末记》的历史价值。</p>
+                        <a href="#" class="video-link">查看详情</a>
+                    </div>
+                </div>
+                
+                <!-- 视频3 -->
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://example.com/placeholder3.jpg" alt="西南联大纪录片">
+                        <div class="video-play-btn" data-video-id="video3"></div>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">《西南联大与一二一运动》</h3>
+                        <div class="video-meta">
+                            <span class="video-author">云南师范大学</span>
+                            <span>2015年</span>
+                        </div>
+                        <p class="video-description">记录西南联大师生在一二一运动中的英勇斗争，展现联大精神与爱国民主传统。</p>
+                        <a href="#" class="video-link">查看详情</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第二部分：纪念活动视频 -->
+            <h3 class="category-header">纪念活动视频</h3>
+            <div class="videos-container">
+                <!-- 视频4 -->
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://example.com/placeholder4.jpg" alt="70周年纪念活动">
+                        <div class="video-play-btn" data-video-id="video4"></div>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">一二一运动70周年纪念大会</h3>
+                        <div class="video-meta">
+                            <span class="video-author">云南省委宣传部</span>
+                            <span>2015年</span>
+                        </div>
+                        <p class="video-description">2015年12月1日在昆明举行的一二一运动70周年纪念大会实况录像，包含领导讲话和文艺演出。</p>
+                        <a href="#" class="video-link">查看详情</a>
+                    </div>
+                </div>
+                
+                <!-- 视频5 -->
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://example.com/placeholder5.jpg" alt="烈士公祭仪式">
+                        <div class="video-play-btn" data-video-id="video5"></div>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">四烈士公祭仪式</h3>
+                        <div class="video-meta">
+                            <span class="video-author">云南师范大学</span>
+                            <span>2020年</span>
+                        </div>
+                        <p class="video-description">每年12月1日在云南师范大学一二一运动纪念馆举行的四烈士公祭仪式。</p>
+                        <a href="#" class="video-link">查看详情</a>
+                    </div>
+                </div>
+                
+                <!-- 视频6 -->
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://example.com/placeholder6.jpg" alt="纪念馆开馆仪式">
+                        <div class="video-play-btn" data-video-id="video6"></div>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">一二一运动纪念馆新馆开馆仪式</h3>
+                        <div class="video-meta">
+                            <span class="video-author">云南电视台</span>
+                            <span>2018年</span>
+                        </div>
+                        <p class="video-description">一二一运动纪念馆新馆开馆仪式实况，展示新馆建筑特色和展览内容。</p>
+                        <a href="#" class="video-link">查看详情</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第三部分：口述历史与访谈 -->
+            <h3 class="category-header">口述历史与访谈</h3>
+            <div class="videos-container">
+                <!-- 视频7 -->
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://example.com/placeholder7.jpg" alt="运动亲历者访谈">
+                        <div class="video-play-btn" data-video-id="video7"></div>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">一二一运动亲历者访谈</h3>
+                        <div class="video-meta">
+                            <span class="video-author">云南师范大学</span>
+                            <span>2010年</span>
+                        </div>
+                        <p class="video-description">多位一二一运动亲历者回忆当年运动经过和个人经历，珍贵口述历史资料。</p>
+                        <a href="#" class="video-link">查看详情</a>
+                    </div>
+                </div>
+                
+                <!-- 视频8 -->
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://example.com/placeholder8.jpg" alt="烈士家属访谈">
+                        <div class="video-play-btn" data-video-id="video8"></div>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">四烈士家属访谈</h3>
+                        <div class="video-meta">
+                            <span class="video-author">中央电视台</span>
+                            <span>2015年</span>
+                        </div>
+                        <p class="video-description">采访四烈士家属，讲述烈士生平事迹和家庭故事，展现烈士精神传承。</p>
+                        <a href="#" class="video-link">查看详情</a>
+                    </div>
+                </div>
+                
+                <!-- 视频9 -->
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://example.com/placeholder9.jpg" alt="历史学者访谈">
+                        <div class="video-play-btn" data-video-id="video9"></div>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">历史学者谈一二一运动</h3>
+                        <div class="video-meta">
+                            <span class="video-author">云南社会科学院</span>
+                            <span>2021年</span>
+                        </div>
+                        <p class="video-description">多位研究一二一运动的历史学者从不同角度解读运动的历史意义和当代价值。</p>
+                        <a href="#" class="video-link">查看详情</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第四部分：学术讲座与研讨会 -->
+            <h3 class="category-header">学术讲座与研讨会</h3>
+            <div class="videos-container">
+                <!-- 视频10 -->
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://example.com/placeholder10.jpg" alt="学术研讨会">
+                        <div class="video-play-btn" data-video-id="video10"></div>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">一二一运动学术研讨会</h3>
+                        <div class="video-meta">
+                            <span class="video-author">云南大学</span>
+                            <span>2020年</span>
+                        </div>
+                        <p class="video-description">纪念一二一运动75周年学术研讨会实况，多位专家学者发表最新研究成果。</p>
+                        <a href="#" class="video-link">查看详情</a>
+                    </div>
+                </div>
+                
+                <!-- 视频11 -->
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://example.com/placeholder11.jpg" alt="专题讲座">
+                        <div class="video-play-btn" data-video-id="video11"></div>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">"一二一运动与青年使命"专题讲座</h3>
+                        <div class="video-meta">
+                            <span class="video-author">云南师范大学</span>
+                            <span>2019年</span>
+                        </div>
+                        <p class="video-description">云南师范大学教授关于一二一运动历史意义和当代青年使命的专题讲座。</p>
+                        <a href="#" class="video-link">查看详情</a>
+                    </div>
+                </div>
+                
+                <!-- 视频12 -->
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <img src="https://example.com/placeholder12.jpg" alt="学术报告">
+                        <div class="video-play-btn" data-video-id="video12"></div>
+                    </div>
+                    <div class="video-content">
+                        <h3 class="video-title">"一二一运动中的地下党组织"学术报告</h3>
+                        <div class="video-meta">
+                            <span class="video-author">党史研究院</span>
+                            <span>2018年</span>
+                        </div>
+                        <p class="video-description">关于一二一运动中云南地下党组织活动的学术报告，基于最新档案研究成果。</p>
+                        <a href="#" class="video-link">查看详情</a>
+                    </div>
+                </div>
+            </div>
+            
+                <!-- 分页导航 -->
+                <ul class="pagination">
+                    <li><a href="#" class="active">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li><a href="#">下一页 &raquo;</a></li>
+                </ul>
+        </div>
+    </div>
+    
+    <!-- 视频播放灯箱 -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <div class="lightbox-content">
+            <div class="video-player">
+                <!-- 这里将动态插入视频播放器iframe -->
+                <iframe id="videoPlayer" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+        <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+    
+    <!-- 页脚 - 与首页相同 -->
+    <div class="footer">
+        <p>© 2025 一二一运动数字档案库 版权所有</p>
+    </div>
+    
+    <!-- JavaScript - 与首页相同 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取当前页面路径
+            const currentPath = window.location.pathname.split('/').pop();
+            
+            // 设置活动导航项
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath || 
+                    (currentPath === 'home page.html' && link.getAttribute('href') === 'home page.html')) {
+                    link.classList.add('active');
+                    
+                    // 如果是下拉菜单项，激活父菜单
+                    if (link.parentElement.parentElement.classList.contains('dropdown-content')) {
+                        const parentLink = link.closest('.dropdown').querySelector('.nav-link');
+                        if (parentLink) parentLink.classList.add('active');
+                    }
+                }
+            });
+            
+            // 搜索功能
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value.trim().toLowerCase();
+                    if (searchTerm) {
+                        alert(`正在搜索: ${searchTerm}`);
+                        // 实际项目中可以跳转到搜索结果页面
+                    }
+                }
+            });
+            
+            // 筛选按钮功能
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // 给当前点击的按钮添加active类
+                    this.classList.add('active');
+                    // 这里可以添加实际的筛选逻辑
+                });
+            });
+            
+            // 视频播放功能
+            const lightbox = document.getElementById('lightbox');
+            const videoPlayer = document.getElementById('videoPlayer');
+            const lightboxCaption = document.getElementById('lightboxCaption');
+            const lightboxClose = document.getElementById('lightboxClose');
+            
+            // 视频数据 - 实际部署时应替换为真实视频ID或URL
+            const videos = {
+                video1: { id: 'exampleVideoId1', title: '《一二一运动》纪录片' },
+                video2: { id: 'exampleVideoId2', title: '《闻一多与一二一运动》专题片' },
+                video3: { id: 'exampleVideoId3', title: '《西南联大与一二一运动》' },
+                video4: { id: 'exampleVideoId4', title: '一二一运动70周年纪念大会' },
+                video5: { id: 'exampleVideoId5', title: '四烈士公祭仪式' },
+                video6: { id: 'exampleVideoId6', title: '一二一运动纪念馆新馆开馆仪式' },
+                video7: { id: 'exampleVideoId7', title: '一二一运动亲历者访谈' },
+                video8: { id: 'exampleVideoId8', title: '四烈士家属访谈' },
+                video9: { id: 'exampleVideoId9', title: '历史学者谈一二一运动' },
+                video10: { id: 'exampleVideoId10', title: '一二一运动学术研讨会' },
+                video11: { id: 'exampleVideoId11', title: '"一二一运动与青年使命"专题讲座' },
+                video12: { id: 'exampleVideoId12', title: '"一二一运动中的地下党组织"学术报告' }
+            };
+            
+            document.querySelectorAll('.video-play-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const videoId = this.getAttribute('data-video-id');
+                    const video = videos[videoId];
+                    
+                    // 实际部署时应根据视频平台替换嵌入代码
+                    // 示例中使用YouTube嵌入格式，国内可使用优酷、腾讯视频等平台的嵌入代码
+                    videoPlayer.src = `https://www.youtube.com/embed/${video.id}?autoplay=1`;
+                    
+                    lightboxCaption.textContent = video.title;
+                    lightbox.style.display = 'flex';
+                });
+            });
+            
+            lightboxClose.addEventListener('click', function() {
+                videoPlayer.src = '';
+                lightbox.style.display = 'none';
+            });
+            
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    videoPlayer.src = '';
+                    lightbox.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

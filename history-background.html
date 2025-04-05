@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>一二一运动</title>
+        <style>
+            :root {
+                font-size: 20px;
+                --primary-color: #b90404; /* 标准红色 */
+                --secondary-color: #3498db;
+                --dark-color: rgb(207, 160, 77);
+                --light-color: #ecf0f13c;
+                --accent-color: #e74c3c;
+            }
+        
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            
+            body {
+                font-family: '华文新魏', Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                background-image: url('https://bpic.588ku.com/back_pic/05/98/71/475ef75d14caa09.jpg');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            }
+    
+            .header {
+                font-size: 34px; 
+                background-color: var(--dark-color);
+                color: white;
+                padding: 1rem;
+                text-align: center;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                position: relative;
+            }
+            
+            .search-container {
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            .search-box {
+                padding: 8px 15px;
+                border-radius: 20px;
+                border: none;
+                outline: none;
+                width: 200px;
+                transition: width 0.3s ease;
+            }
+            
+            .search-box:focus {
+                width: 250px;
+            }
+            
+            .nav-container {
+                background-color: var(--primary-color);
+                padding: 0.5rem 0;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            
+            .nav-menu {
+                display: flex;
+                justify-content: center;
+                list-style: none;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 1rem;
+            }
+            
+            .nav-menu li {
+                margin: 0 1rem;
+                position: relative;
+            }
+            
+            .nav-menu a {
+                color: white;
+                text-decoration: none;
+                font-weight: bold;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                transition: all 0.3s ease;
+                display: block;
+            }
+            
+            .nav-menu a:hover, .nav-menu a.active {
+                background-color: rgba(255,255,255,0.2);
+            }
+            
+            /* 下拉菜单样式 */
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: white;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+                border-radius: 4px;
+                top: 100%;
+                left: 0;
+            }
+            
+            .dropdown-content a {
+                color: var(--dark-color);
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                transition: background-color 0.3s;
+            }
+            
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+            
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+            
+            .container {
+                display: flex;
+                flex-direction: column;
+                min-height: calc(100vh - 150px);
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 1rem;
+            }
+            
+            .home-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 2rem;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                margin-bottom: 2rem;
+            }
+            
+            .home-content h2 {
+                color: var(--primary-color);
+                margin-bottom: 1rem;
+            }
+            
+            .home-content p {
+                margin-bottom: 1.5rem;
+                max-width: 800px;
+            }
+            
+            .card-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            
+            .card {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                overflow: hidden;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+            
+            .card-img {
+                height: 180px;
+                background-color: var(--light-color);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                color: var(--primary-color);
+                background-size: cover;
+                background-position: center;
+            }
+            
+            .card-content {
+                padding: 1.5rem;
+            }
+            
+            .card-content h3 {
+                color: var(--dark-color);
+                margin-bottom: 0.5rem;
+            }
+            
+            .card-content p {
+                margin-bottom: 1rem;
+                color: #666;
+            }
+            
+            .btn {
+                display: inline-block;
+                background-color: var(--primary-color);
+                color: white;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+                border: none;
+                cursor: pointer;
+            }
+            
+            .btn:hover {
+                background-color: var(--secondary-color);
+            }
+            
+            /* 分页导航样式 */
+            .pagination {
+                display: flex;
+                justify-content: center;
+                margin-top: 20px;
+                list-style: none;
+            }
+            
+            .pagination li {
+                margin: 0 5px;
+            }
+            
+            .pagination a {
+                display: inline-block;
+                padding: 8px 16px;
+                background-color: white;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                color: var(--primary-color);
+                text-decoration: none;
+                transition: all 0.3s;
+            }
+            
+            .pagination a:hover {
+                background-color: var(--primary-color);
+                color: white;
+                border-color: var(--primary-color);
+            }
+            
+            .pagination a.active {
+                background-color: var(--primary-color);
+                color: white;
+                border-color: var(--primary-color);
+            }
+            
+            .footer {
+                background-color: var(--dark-color);
+                color: white;
+                text-align: center;
+                padding: 1rem;
+                margin-top: auto;
+            }
+            
+            /* 响应式设计 */
+            @media (max-width: 768px) {
+                .nav-menu {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                
+                .nav-menu li {
+                    margin: 0.5rem 0;
+                    width: 100%;
+                    text-align: center;
+                }
+                
+                .card-container {
+                    grid-template-columns: 1fr;
+                }
+                
+                .search-container {
+                    position: static;
+                    transform: none;
+                    margin-top: 10px;
+                    width: 100%;
+                    text-align: center;
+                }
+                
+                .search-box {
+                    width: 80%;
+                }
+                
+                .dropdown-content {
+                    position: static;
+                    width: 100%;
+                    box-shadow: none;
+                }
+            }
+        </style>
+<body>
+    <!-- 头部区域 - 与首页相同 -->
+    <div class="header">
+        <h1>一二一运动</h1>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="搜索内容..." id="searchInput">
+        </div>
+    </div>
+    
+    <!-- 导航栏 - 与首页相同 -->
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <li><a href="home page.html" class="nav-link">首页</a></li>
+            <li class="dropdown">
+                <a href="#" class="nav-link active">历史资料</a>
+                <div class="dropdown-content">
+                    <a href="history-background.html" class="nav-link active">历史背景</a>
+                    <a href="movement-process.html" class="nav-link">运动过程</a>
+                    <a href="historical-significance.html" class="nav-link">历史意义</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="nav-link">文献资料</a>
+                <div class="dropdown-content">
+                    <a href="original-documents.html" class="nav-link">原始文献</a>
+                    <a href="research-papers.html" class="nav-link">研究论文</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="nav-link">多媒体</a>
+                <div class="dropdown-content">
+                    <a href="historical-photos.html" class="nav-link">历史图片</a>
+                    <a href="video-materials.html" class="nav-link">视频资料</a>
+                </div>
+            </li>
+            <li><a href="about-us.html" class="nav-link">关于我们</a></li>
+        </ul>
+    </div>
+        </ul>
+    </div>
+    
+        
+        <!-- 页面标题 -->
+        <div class="page-header" style="text-align: center; margin-bottom: 2rem;">
+            <h2 style="font-size: 2rem; color: var(--primary-color);">一二一运动历史背景</h2>
+        </div>
+        
+        <!-- 历史背景内容区域 -->
+        <div class="history-content" style="background-color: white; border-radius: 8px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <!-- 第一部分 -->
+            <section style="margin-bottom: 2rem;">
+                <h3 style="color: var(--dark-color); margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">抗战胜利后的国内形势</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                    1945年抗日战争胜利后，国内政治形势发生了根本的变化。美帝国主义支持的国民党反动派和中国人民的矛盾，已成为主要矛盾。经过艰苦卓绝的八年抗战，中国人民付出了巨大的牺牲，迫切需要休养生息，重建家园，医治战争创伤。
+                </p>
+                <div style="text-align: center; margin: 1.5rem 0;">
+                    <img src="https://www.tsinghua.edu.cn/_mediafile/qh2021b/publish/news/4205/20151210/82161449724458261.jpg" alt="抗战胜利后形势" style="max-width: 100%; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                    <p style="font-size: 0.8rem; color: #666; margin-top: 0.5rem;">抗战胜利后的国内形势</p>
+                </div>
+            </section>
+            
+            <!-- 第二部分 -->
+            <section style="margin-bottom: 2rem;">
+                <h3 style="color: var(--dark-color); margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">国共两党的不同主张</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                    中国共产党代表人民的根本利益和要求，发表《对目前时局的宣言》，提出"和平、民主、团结"三大口号，和成立举国一致的民主的联合政府的主张，为建设独立、自由与富强的新中国而奋斗。毛泽东、周恩来并亲自到重庆同国民党谈判。
+                </p>
+                <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                    以蒋介石为代表的国民党中央被迫签订了《双十协定》、却又背信弃义疯狂进攻解放区，妄图以武力消灭共产党和人民军队，坚持内战，坚持大地主大资产阶级专政。
+                </p>
+            </section>
+            
+            <!-- 第三部分 -->
+            <section style="margin-bottom: 2rem;">
+                <h3 style="color: var(--dark-color); margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">云南的特殊政治环境</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                    在祖国西南边陲多民族的云南，历史上多年存在着以蒋介石为代表的国民党中央与地方势力之间的矛盾。抗日战争期间，云南成为战略后方和国际通道，蒋介石借抗战反共之机，更加处心积虑地图谋翦除异己，其损人利己玩弄控制云南的伎俩，深为地方当局和上层人士所忿恨。
+                </p>
+            </section>
+            
+            <!-- 第四部分 -->
+            <section style="margin-bottom: 2rem;">
+                <h3 style="color: var(--dark-color); margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">昆明成为"民主堡垒"</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                    1938年，北京大学、清华大学、南开大学迁到昆明组成西南联合大学，富有"五四"、"一二·九"运动革命传统的进步师生，和来自全国各地的其他大学、文化团体的大批革命知识分子、名流学者、爱国民主人士荟萃昆明，同云南社会各阶层爱国民主力量相结合。他们与全国人民血肉相连，有较高的政治觉悟和敏感，能够敏锐地反映全国人民的思想情绪和要求。
+                </p>
+                <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                    在党的领导和组织推动下，巩固和扩大了抗日民族统一战线;抗日救亡运动和文化、教育、新闻等社会各界的进步力量有很大发展。当时，在共产党的领导和影响下，以西南联大为中坚和主要阵地，昆明全市大中学校广大师生和社会各界爱国民主人士结成的进步力量，蓬勃开展的民主运动，使昆明被誉为国统区的"民主堡垒"。
+                </p>
+            </section>
+            
+            <!-- 第五部分 -->
+            <section style="margin-bottom: 2rem;">
+                <h3 style="color: var(--dark-color); margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">国民党对云南的控制加强</h3>
+                <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                    日本投降后，蒋介石为独吞抗战胜利果实，发动大举进攻解放区的全面内战，经过精密策划，借派卢汉率部往越南受降为名，调滇军主力离开云南，于10月3日命其嫡系部队突然袭击，以武力改组云南省政府，逼迫省主席龙云下台，任命他的嫡系CC骨干李宗黄为国民党省党部主任、民政厅长代省政府主席，关麟征为省警备总司令，建立其控制云南党政军的统治体系，准备进一步镇压共产党领导的爱国民主运动，稳定其内战后方。
+                </p>
+                <p style="line-height: 1.8; margin-bottom: 1rem; text-indent: 2em;">
+                    这样，抗战胜利后，中国两种势力、两个命运和前途的斗争急速加剧的时刻，在国统区各种政治势力矛盾冲突中，昆明便首先成为一个爆发点。
+                </p>
+            </section>
+            
+            <!-- 相关链接 -->
+            <div style="margin-top: 3rem; border-top: 1px solid #eee; padding-top: 1.5rem;">
+                <h4 style="color: var(--primary-color); margin-bottom: 1rem;">相关内容</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 1rem;">
+                    <a href="movement-process.html" style="display: inline-block; padding: 0.5rem 1rem; background-color: var(--light-color); border-radius: 4px; color: var(--primary-color); text-decoration: none;">运动过程</a>
+                    <a href="historical-significance.html" style="display: inline-block; padding: 0.5rem 1rem; background-color: var(--light-color); border-radius: 4px; color: var(--primary-color); text-decoration: none;">历史意义</a>
+                    <a href="original-documents.html" style="display: inline-block; padding: 0.5rem 1rem; background-color: var(--light-color); border-radius: 4px; color: var(--primary-color); text-decoration: none;">原始文献</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 页脚 - 与首页相同 -->
+    <div class="footer">
+        <p>© 2025 一二一运动数字档案库 版权所有</p>
+    </div>
+    
+    <!-- JavaScript - 与首页相同 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取当前页面路径
+            const currentPath = window.location.pathname.split('/').pop();
+            
+            // 设置活动导航项
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                    
+                    // 如果是下拉菜单项，激活父菜单
+                    if (link.parentElement.parentElement.classList.contains('dropdown-content')) {
+                        const parentLink = link.closest('.dropdown').querySelector('.nav-link');
+                        if (parentLink) parentLink.classList.add('active');
+                    }
+                }
+            });
+            
+            // 搜索功能
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value.trim().toLowerCase();
+                    if (searchTerm) {
+                        alert(`正在搜索: ${searchTerm}`);
+                        // 实际项目中可以跳转到搜索结果页面
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

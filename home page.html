@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一二一运动</title>
+    <style>
+        :root {
+            font-size: 20px;
+            --primary-color: #b90404; /* 标准红色 */
+            --secondary-color: #3498db;
+            --dark-color: rgb(207, 160, 77);
+            --light-color: #ecf0f13c;
+            --accent-color: #e74c3c;
+        }
+    
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: '华文新魏', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-image: url('https://bpic.588ku.com/back_pic/05/98/71/475ef75d14caa09.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .header {
+            font-size: 34px; 
+            background-color: var(--dark-color);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .search-container {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .search-box {
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            width: 200px;
+            transition: width 0.3s ease;
+        }
+        
+        .search-box:focus {
+            width: 250px;
+        }
+        
+        .nav-container {
+            background-color: var(--primary-color);
+            padding: 0.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-menu {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .nav-menu li {
+            margin: 0 1rem;
+            position: relative;
+        }
+        
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: block;
+        }
+        
+        .nav-menu a:hover, .nav-menu a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        /* 下拉菜单样式 */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 4px;
+            top: 100%;
+            left: 0;
+        }
+        
+        .dropdown-content a {
+            color: var(--dark-color);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+        
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: calc(100vh - 150px);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .home-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .home-content h2 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .home-content p {
+            margin-bottom: 1.5rem;
+            max-width: 800px;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .card-img {
+            height: 180px;
+            background-color: var(--light-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary-color);
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .card-content {
+            padding: 1.5rem;
+        }
+        
+        .card-content h3 {
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .card-content p {
+            margin-bottom: 1rem;
+            color: #666;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        /* 分页导航样式 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            list-style: none;
+        }
+        
+        .pagination li {
+            margin: 0 5px;
+        }
+        
+        .pagination a {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .pagination a:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .pagination a.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .nav-menu {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-menu li {
+                margin: 0.5rem 0;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .card-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .search-container {
+                position: static;
+                transform: none;
+                margin-top: 10px;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .search-box {
+                width: 80%;
+            }
+            
+            .dropdown-content {
+                position: static;
+                width: 100%;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>一二一运动</h1>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="搜索内容..." id="searchInput">
+        </div>
+    </div>
+    
+    <div class="nav-container">
+        <ul class="nav-menu">
+            <li><a href="fifth.html" class="nav-link active">首页</a></li>
+            <li class="dropdown">
+                <a href="#" class="nav-link">历史资料</a>
+                <div class="dropdown-content">
+                    <a href="history-background.html" class="nav-link">历史背景</a>
+                    <a href="movement-process.html" class="nav-link">运动过程</a>
+                    <a href="historical-significance.html" class="nav-link">历史意义</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="nav-link">文献资料</a>
+                <div class="dropdown-content">
+                    <a href="original-documents.html" class="nav-link">原始文献</a>
+                    <a href="research-papers.html" class="nav-link">研究论文</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="nav-link">多媒体</a>
+                <div class="dropdown-content">
+                    <a href="historical-photos.html" class="nav-link">历史图片</a>
+                    <a href="video-materials.html" class="nav-link">视频资料</a>
+                </div>
+            </li>
+            <li><a href="about-us.html" class="nav-link">关于我们</a></li>
+        </ul>
+    </div>
+    
+    <div class="container">
+        <!-- 首页内容 -->
+        <div class="home-content">
+            <h2 style="font-size: 2.2rem; margin-bottom: 1.5rem; color: #5e2d8e; line-height: 1.3;">一二一运动简介</h2>
+            
+            <div style="max-width: 800px; margin: 0 auto; text-align: left;">
+                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem; color: #444;">
+                    一二一运动是1945年12月1日发生在昆明的一次大规模学生爱国民主运动，作为抗日战争胜利后中国学生运动的重要里程碑，在中国近代史上具有深远影响。
+                </p>
+                
+                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem; color: #444;">
+                    这场运动由西南联合大学、云南大学等高校学生发起，抗议国民党政府的内战政策，要求和平、民主、团结。运动迅速扩展到全国多个城市，形成了声势浩大的学生爱国民主运动浪潮。
+                </p>
+                
+                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem; color: #444;">
+                    本网站全面系统地介绍一二一运动的历史背景、发展过程和深远影响，通过丰富的历史文献、图片和视频资料，帮助您深入了解这段重要的历史事件。
+                </p>
+                
+                <p style="font-size: 1.1rem; line-height: 1.8; color: #666; font-style: italic;">
+                    "历史是最好的教科书，中国革命历史是最好的营养剂。"<br>
+                    —— 习近平
+                </p>
+            </div>
+        </div>
+        
+        <div class="card-container">
+            <a href="history-background.html" class="card">
+                <div class="card-img" style="background-image: url('https://tuanwei.sdca.edu.cn/__local/E/1D/C2/4FC71F09318F7286852D33682A9_30875767_39137.png');"></div>
+                <div class="card-content">
+                    <h3>历史背景</h3>
+                    <p>了解一二一运动发生的社会历史背景和政治环境，探究运动爆发的深层次原因。</p>
+                    <button class="btn">查看详情</button>
+                </div>
+            </a>
+            
+            <a href="movement-process.html" class="card">
+                <div class="card-img" style="background-image: url('https://www.tsinghua.edu.cn/_mediafile/qh2021b/publish/news/4205/20151210/82161449724458261.jpg');"></div>
+                <div class="card-content">
+                    <h3>运动过程</h3>
+                    <p>回顾一二一运动的发展历程，包括主要事件、参与人物和关键时间节点。</p>
+                    <button class="btn">查看详情</button>
+                </div>
+            </a>
+            
+            <a href="historical-significance.html" class="card">
+                <div class="card-img" style="background-image: url('https://today.help.bj.cn/12/1/1945/02233242939.jpg');"></div>
+                <div class="card-content">
+                    <h3>历史意义</h3>
+                    <p>分析一二一运动对中国近代史的影响，以及对当代社会的启示。</p>
+                    <button class="btn">查看详情</button>
+                </div>
+            </a>
+            
+            <a href="original-documents.html" class="card">
+                <div class="card-img" style="background-image: url('https://pic.baike.soso.com/ugc/baikepic2/19002/20160912160717-2018922690.jpg/300');"></div>
+                <div class="card-content">
+                    <h3>原始文献</h3>
+                    <p>查阅一二一运动相关的原始档案、文件和第一手资料。</p>
+                    <button class="btn">查看详情</button>
+                </div>
+            </a>
+            
+            <a href="Untitled-5.html" class="card">
+                <div class="card-img" style="background-image: url('https://www.sizhengwang.cn/upload/resources/image/2021/05/25/594897.jpg?1661974264902');"></div>
+                <div class="card-content">
+                    <h3>研究论文</h3>
+                    <p>浏览学者们关于一二一运动的研究成果和学术论文。</p>
+                    <button class="btn">查看详情</button>
+                </div>
+            </a>
+            
+            <a href="Untitled-6.html" class="card">
+                <div class="card-img" style="background-image: url('https://x0.ifengimg.com/ucms/2021_07/CDAC9C3C225C8A77B9B5CB1D0E51127DF8B63EFA_size60_w640_h360.jpg');"></div>
+                <div class="card-content">
+                    <h3>历史图片</h3>
+                    <p>观看一二一运动期间拍摄的历史照片和图像资料。</p>
+                    <button class="btn">查看详情</button>
+                </div>
+            </a>
+            
+            <a href="Untitled-7.html" class="card">
+                <div class="card-img" style="background-image: url('https://p1.ssl.qhimg.com/dr/270_500_/t018def92f57ad539ee.jpg?size=268x270');"></div>
+                <div class="card-content">
+                    <h3>视频资料</h3>
+                    <p>观看关于一二一运动的纪录片、访谈和影视资料。</p>
+                    <button class="btn">查看详情</button>
+                </div>
+            </a>
+        </div>
+        
+        <!-- 分页导航 -->
+        <ul class="pagination">
+            <li><a href="#" class="active">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+        </ul>
+    </div>
+    
+    <div class="footer">
+        <p>© 2025 一二一运动数字档案库 版权所有</p>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取当前页面路径
+            const currentPath = window.location.pathname.split('/').pop();
+            
+            // 设置活动导航项
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath || 
+                    (currentPath === 'fifth.html' && link.getAttribute('href') === 'fifth.html')) {
+                    link.classList.add('active');
+                    
+                    // 如果是下拉菜单项，激活父菜单
+                    if (link.parentElement.parentElement.classList.contains('dropdown-content')) {
+                        const parentLink = link.closest('.dropdown').querySelector('.nav-link');
+                        if (parentLink) parentLink.classList.add('active');
+                    }
+                }
+            });
+            
+            // 搜索功能
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value.trim().toLowerCase();
+                    if (searchTerm) {
+                        alert(`正在搜索: ${searchTerm}`);
+                        // 实际项目中可以跳转到搜索结果页面
+                    }
+                }
+            });
+            
+            // 分页导航点击事件
+            const paginationLinks = document.querySelectorAll('.pagination a');
+            paginationLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    paginationLinks.forEach(pagLink => {
+                        pagLink.classList.remove('active');
+                    });
+                    
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+
+    
+</body>
+</html>

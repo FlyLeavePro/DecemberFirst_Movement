@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- 保持与首页完全相同的head部分 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一二一运动 - 原始文献</title>
+    <style>
+        /* 保持与首页完全相同的CSS样式 */
+        :root {
+                font-size: 20px;
+                --primary-color: #b90404; /* 标准红色 */
+                --secondary-color: #3498db;
+                --dark-color: rgb(207, 160, 77);
+                --light-color: #ecf0f13c;
+                --accent-color: #e74c3c;
+            }
+        
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            
+            body {
+                font-family: '华文新魏', Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                background-image: url('https://bpic.588ku.com/back_pic/05/98/71/475ef75d14caa09.jpg');
+                background-size: cover;
+                background-position: center;
+                background-attachment: fixed;
+            }
+    
+            .header {
+                font-size: 34px; 
+                background-color: var(--dark-color);
+                color: white;
+                padding: 1rem;
+                text-align: center;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                position: relative;
+            }
+            
+            .search-container {
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            .search-box {
+                padding: 8px 15px;
+                border-radius: 20px;
+                border: none;
+                outline: none;
+                width: 200px;
+                transition: width 0.3s ease;
+            }
+            
+            .search-box:focus {
+                width: 250px;
+            }
+            
+            .nav-container {
+                background-color: var(--primary-color);
+                padding: 0.5rem 0;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+            }
+            
+            .nav-menu {
+                display: flex;
+                justify-content: center;
+                list-style: none;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 0 1rem;
+            }
+            
+            .nav-menu li {
+                margin: 0 1rem;
+                position: relative;
+            }
+            
+            .nav-menu a {
+                color: white;
+                text-decoration: none;
+                font-weight: bold;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                transition: all 0.3s ease;
+                display: block;
+            }
+            
+            .nav-menu a:hover, .nav-menu a.active {
+                background-color: rgba(255,255,255,0.2);
+            }
+            
+            /* 下拉菜单样式 */
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: white;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+                border-radius: 4px;
+                top: 100%;
+                left: 0;
+            }
+            
+            .dropdown-content a {
+                color: var(--dark-color);
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                transition: background-color 0.3s;
+            }
+            
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+            
+            .dropdown:hover .dropdown-content {
+                display: block;
+            }
+            
+            .container {
+                display: flex;
+                flex-direction: column;
+                min-height: calc(100vh - 150px);
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 1rem;
+            }
+            
+            .home-content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 2rem;
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                margin-bottom: 2rem;
+            }
+            
+            .home-content h2 {
+                color: var(--primary-color);
+                margin-bottom: 1rem;
+            }
+            
+            .home-content p {
+                margin-bottom: 1.5rem;
+                max-width: 800px;
+            }
+            
+            .card-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 2rem;
+            }
+            
+            .card {
+                background-color: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                overflow: hidden;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+            
+            .card-img {
+                height: 180px;
+                background-color: var(--light-color);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 3rem;
+                color: var(--primary-color);
+                background-size: cover;
+                background-position: center;
+            }
+            
+            .card-content {
+                padding: 1.5rem;
+            }
+            
+            .card-content h3 {
+                color: var(--dark-color);
+                margin-bottom: 0.5rem;
+            }
+            
+            .card-content p {
+                margin-bottom: 1rem;
+                color: #666;
+            }
+            
+            .btn {
+                display: inline-block;
+                background-color: var(--primary-color);
+                color: white;
+                padding: 0.5rem 1rem;
+                border-radius: 4px;
+                text-decoration: none;
+                transition: background-color 0.3s ease;
+                border: none;
+                cursor: pointer;
+            }
+            
+            .btn:hover {
+                background-color: var(--secondary-color);
+            }
+            
+            /* 分页导航样式 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            list-style: none;
+        }
+        
+        .pagination li {
+            margin: 0 5px;
+        }
+        
+        .pagination a {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .pagination a:hover {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .pagination a.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .footer {
+            background-color: var(--dark-color);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+            /* 响应式设计 */
+            @media (max-width: 768px) {
+                .nav-menu {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                
+                .nav-menu li {
+                    margin: 0.5rem 0;
+                    width: 100%;
+                    text-align: center;
+                }
+                
+                .card-container {
+                    grid-template-columns: 1fr;
+                }
+                
+                .search-container {
+                    position: static;
+                    transform: none;
+                    margin-top: 10px;
+                    width: 100%;
+                    text-align: center;
+                }
+                
+                .search-box {
+                    width: 80%;
+                }
+                
+                .dropdown-content {
+                    position: static;
+                    width: 100%;
+                    box-shadow: none;
+                }
+            }
+        /* 新增原始文献页面特有样式 */
+        .documents-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .document-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .document-card:hover {
+            transform: translateY(-5px);
+        }
+        .document-image {
+            height: 200px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .document-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .document-card:hover .document-image img {
+            transform: scale(1.05);
+        }
+        .document-type {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+        .document-content {
+            padding: 1.25rem;
+        }
+        .document-title {
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        .document-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+        .document-description {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        .document-link {
+            display: inline-block;
+            color: var(--primary-color);
+            font-size: 0.85rem;
+            text-decoration: none;
+            border-bottom: 1px dashed var(--primary-color);
+            transition: all 0.2s ease;
+        }
+        .document-link:hover {
+            color: var(--dark-color);
+            border-bottom-color: var(--dark-color);
+        }
+        .category-header {
+            margin: 2.5rem 0 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--light-color);
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        .search-bar {
+            margin: 1.5rem 0;
+            display: flex;
+            gap: 0.5rem;
+        }
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .search-bar button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .search-bar button:hover {
+            background-color: var(--dark-color);
+        }
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部区域 - 与首页相同 -->
+    <div class="header">
+        <h1>一二一运动</h1>
+        <div class="search-container">
+            <input type="text" class="search-box" placeholder="搜索内容..." id="searchInput">
+        </div>
+    </div>
+        <!-- 导航栏 - 与首页相同 -->
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li><a href="home page.html" class="nav-link">首页</a></li>
+                <li class="dropdown">
+                    <a href="#" class="nav-link">历史资料</a>
+                    <div class="dropdown-content">
+                        <a href="history-background.html" class="nav-link active">历史背景</a>
+                        <a href="movement-process.html" class="nav-link">运动过程</a>
+                        <a href="historical-significance.html" class="nav-link">历史意义</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="nav-link active">文献资料</a>
+                    <div class="dropdown-content">
+                        <a href="original-documents.html" class="nav-link">原始文献</a>
+                        <a href="research-papers.html" class="nav-link">研究论文</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="nav-link">多媒体</a>
+                    <div class="dropdown-content">
+                        <a href="historical-photos.html" class="nav-link">历史图片</a>
+                        <a href="video-materials.html" class="nav-link">视频资料</a>
+                    </div>
+                </li>
+                <li><a href="about-us.html" class="nav-link">关于我们</a></li>
+            </ul>
+        </div>
+            </ul>
+        </div>
+        </ul>
+    </div>
+    
+        
+        <!-- 页面标题 -->
+        <div class="page-header" style="text-align: center; margin-bottom: 1.5rem;">
+            <h2 style="font-size: 2rem; color: var(--primary-color);">一二一运动原始文献</h2>
+            <p style="color: #666; margin-top: 0.5rem;">珍贵历史资料数字化档案</p>
+        </div>
+        
+        <!-- 搜索和筛选区域 -->
+        <div class="search-bar">
+            <input type="text" placeholder="搜索文献标题、关键词或描述...">
+            <button>搜索</button>
+        </div>
+        
+        <div class="filter-options">
+            <button class="filter-btn active">全部</button>
+            <button class="filter-btn">宣言公告</button>
+            <button class="filter-btn">烈士遗物</button>
+            <button class="filter-btn">历史照片</button>
+            <button class="filter-btn">媒体报道</button>
+            <button class="filter-btn">研究论文</button>
+        </div>
+        
+        <!-- 原始文献内容区域 -->
+        <div class="documents-content" style="background-color: white; border-radius: 8px; padding: 2rem; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            
+            <!-- 第一部分：运动宣言与公告 -->
+            <h3 class="category-header">运动宣言与公告</h3>
+            <div class="documents-container">
+                <!-- 文档1 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">宣言</span>
+                        <img src="https://via.placeholder.com/300x200?text=《罢课宣言》" alt="《罢课宣言》">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">《昆明市大中学生为反对内战及抗议武装干涉集会告全国同胞书》</h4>
+                        <div class="document-meta">
+                            <span>1945年11月28日</span>
+                            <span>PDF 2.3MB</span>
+                        </div>
+                        <p class="document-description">昆明学联发布的罢课宣言，鲜明表达了昆明学生的政治主张：立即制止内战，要求撤退驻华美军；组织民主联合政府；切实保障人民自由。</p>
+                        <a href="#" class="document-link">查看全文</a>
+                        <!-- 这里可以添加原始文件地址，例如：
+                        <a href="documents/罢课宣言.pdf" class="document-link" download>下载PDF</a>
+                        -->
+                    </div>
+                </div>
+                
+                <!-- 文档2 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">公告</span>
+                        <img src="https://via.placeholder.com/300x200?text=《复课宣言》" alt="《复课宣言》">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">《昆明市大中学校学生自治会复课宣言》</h4>
+                        <div class="document-meta">
+                            <span>1945年12月25日</span>
+                            <span>PDF 1.8MB</span>
+                        </div>
+                        <p class="document-description">全市大中学校学生自治会一致通过，声明为顾全大局，在五项条件已得到基本解决的情况下，忍痛抑悲，停灵复课。</p>
+                        <a href="#" class="document-link">查看全文</a>
+                    </div>
+                </div>
+                
+                <!-- 文档3 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">抗议书</span>
+                        <img src="https://via.placeholder.com/300x200?text=教授抗议书" alt="教授抗议书">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">《西南联大全体教授为11月25日地方军政当局侵害集会自由事件抗议书》</h4>
+                        <div class="document-meta">
+                            <span>1945年11月29日</span>
+                            <span>PDF 1.5MB</span>
+                        </div>
+                        <p class="document-description">联大教授会决议通过，严正指出地方军政当局妨害人民正当之自由，侵犯学府之尊严，抑且引起社会莫大不安。</p>
+                        <a href="#" class="document-link">查看全文</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第二部分：烈士遗物与手稿 -->
+            <h3 class="category-header">烈士遗物与手稿</h3>
+            <div class="documents-container">
+                <!-- 文档4 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">手稿</span>
+                        <img src="https://via.placeholder.com/300x200?text=潘琰手稿" alt="潘琰手稿">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">潘琰烈士日记与读书笔记</h4>
+                        <div class="document-meta">
+                            <span>1943-1945年</span>
+                            <span>JPG 15张</span>
+                        </div>
+                        <p class="document-description">潘琰烈士生前日记和读书笔记手稿，记录了她的革命思想和学习马列主义的心得体会。</p>
+                        <a href="#" class="document-link">查看详情</a>
+                    </div>
+                </div>
+                
+                <!-- 文档5 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">遗物</span>
+                        <img src="https://via.placeholder.com/300x200?text=于再遗物" alt="于再遗物">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">于再烈士遗物：入党申请书与家书</h4>
+                        <div class="document-meta">
+                            <span>1938-1945年</span>
+                            <span>PDF 3.2MB</span>
+                        </div>
+                        <p class="document-description">于再烈士1938年在延安写的入党申请书和抗战期间写给家人的书信，展现了他的革命理想和家国情怀。</p>
+                        <a href="#" class="document-link">查看详情</a>
+                    </div>
+                </div>
+                
+                <!-- 文档6 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">血衣</span>
+                        <img src="https://via.placeholder.com/300x200?text=烈士血衣" alt="烈士血衣">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">四烈士血衣与遗物档案</h4>
+                        <div class="document-meta">
+                            <span>1945年12月</span>
+                            <span>JPG 25张</span>
+                        </div>
+                        <p class="document-description">一二一惨案中牺牲的四位烈士的血衣、遗物照片及法医鉴定报告等档案资料。</p>
+                        <a href="#" class="document-link">查看详情</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第三部分：历史照片与影像 -->
+            <h3 class="category-header">历史照片与影像</h3>
+            <div class="documents-container">
+                <!-- 文档7 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">照片集</span>
+                        <img src="https://via.placeholder.com/300x200?text=时事晚会" alt="时事晚会">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">反内战时事晚会现场照片</h4>
+                        <div class="document-meta">
+                            <span>1945年11月25日</span>
+                            <span>JPG 8张</span>
+                        </div>
+                        <p class="document-description">西南联大图书馆前草坪举行的反内战时事晚会现场照片，记录国民党军队包围会场、切断电线的场景。</p>
+                        <a href="#" class="document-link">查看图集</a>
+                    </div>
+                </div>
+                
+                <!-- 文档8 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">照片集</span>
+                        <img src="https://via.placeholder.com/300x200?text=一二一惨案" alt="一二一惨案">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">"一二·一"惨案现场照片</h4>
+                        <div class="document-meta">
+                            <span>1945年12月1日</span>
+                            <span>JPG 12张</span>
+                        </div>
+                        <p class="document-description">特务暴徒袭击联大师范学院、云大等校的现场照片，记录国民党制造惨案的罪证。</p>
+                        <a href="#" class="document-link">查看图集</a>
+                    </div>
+                </div>
+                
+                <!-- 文档9 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">影像</span>
+                        <img src="https://via.placeholder.com/300x200?text=四烈士出殡" alt="四烈士出殡">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">四烈士出殡仪式纪录片</h4>
+                        <div class="document-meta">
+                            <span>1946年3月17日</span>
+                            <span>MP4 15分钟</span>
+                        </div>
+                        <p class="document-description">昆明3万余人参加的四烈士出殡仪式纪录片，展现"民主使徒"、"你们死了，还有我们"等标语和庄严肃穆的送殡队伍。</p>
+                        <a href="#" class="document-link">观看视频</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第四部分：媒体报道与评论 -->
+            <h3 class="category-header">媒体报道与评论</h3>
+            <div class="documents-container">
+                <!-- 文档10 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">报纸</span>
+                        <img src="https://via.placeholder.com/300x200?text=《解放日报》" alt="《解放日报》">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">延安《解放日报》关于"一二·一"惨案的社论</h4>
+                        <div class="document-meta">
+                            <span>1945年12月</span>
+                            <span>PDF 1.2MB</span>
+                        </div>
+                        <p class="document-description">《昆明惨案》社论指出："昆明惨案在全国说来是1926年'三·一八'惨案以来，将近20年间所没有发生过的大惨案"。</p>
+                        <a href="#" class="document-link">查看全文</a>
+                    </div>
+                </div>
+                
+                <!-- 文档11 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">报纸</span>
+                        <img src="https://via.placeholder.com/300x200?text=《新华日报》" alt="《新华日报》">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">重庆《新华日报》关于昆明学生运动的系列报道</h4>
+                        <div class="document-meta">
+                            <span>1945年11-12月</span>
+                            <span>PDF 4.5MB</span>
+                        </div>
+                        <p class="document-description">持续报道昆明学生运动进展，发表多篇社论高度评价运动意义，指出昆明学生的呼声和行动可以代表全国人民。</p>
+                        <a href="#" class="document-link">查看合集</a>
+                    </div>
+                </div>
+                
+                <!-- 文档12 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">刊物</span>
+                        <img src="https://via.placeholder.com/300x200?text=《民主周刊》" alt="《民主周刊》">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">《民主周刊》等七刊联合增刊抗议当局暴行</h4>
+                        <div class="document-meta">
+                            <span>1945年12月</span>
+                            <span>PDF 2.8MB</span>
+                        </div>
+                        <p class="document-description">昆明七种民主期刊联合出版增刊，全面报道"一二·一"惨案真相，抗议国民党当局暴行。</p>
+                        <a href="#" class="document-link">查看全文</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第五部分：研究论文与专著 -->
+            <h3 class="category-header">研究论文与专著</h3>
+            <div class="documents-container">
+                <!-- 文档13 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">论文</span>
+                        <img src="https://via.placeholder.com/300x200?text=《论"一二·一"运动》" alt="《论"一二·一"运动》">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">《论"一二·一"运动的意义和基本经验》</h4>
+                        <div class="document-meta">
+                            <span>李申文</span>
+                            <span>PDF 3.6MB</span>
+                        </div>
+                        <p class="document-description">系统论述一二一运动的历史意义和基本经验，分析运动在第二条战线形成过程中的重要作用。</p>
+                        <a href="#" class="document-link">查看全文</a>
+                    </div>
+                </div>
+                
+                <!-- 文档14 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">专著</span>
+                        <img src="https://via.placeholder.com/300x200?text=《一二一运动史》" alt="《一二一运动史》">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">《一二一运动史》</h4>
+                        <div class="document-meta">
+                            <span>云南人民出版社</span>
+                            <span>PDF 15MB</span>
+                        </div>
+                        <p class="document-description">全面记录一二一运动历史过程的权威专著，包含大量第一手资料和当事人回忆。</p>
+                        <a href="#" class="document-link">查看目录</a>
+                    </div>
+                </div>
+                
+                <!-- 文档15 -->
+                <div class="document-card">
+                    <div class="document-image">
+                        <span class="document-type">回忆录</span>
+                        <img src="https://via.placeholder.com/300x200?text=《回忆一二一》" alt="《回忆一二一》">
+                    </div>
+                    <div class="document-content">
+                        <h4 class="document-title">《回忆一二一运动》</h4>
+                        <div class="document-meta">
+                            <span>多位参与者</span>
+                            <span>PDF 8.2MB</span>
+                        </div>
+                        <p class="document-description">一二一运动亲历者的回忆文章合集，从不同角度记录运动细节和参与者的心路历程。</p>
+                        <a href="#" class="document-link">查看选集</a>
+                    </div>
+                </div>
+            </div>
+            
+        <!-- 分页导航 -->
+        <ul class="pagination">
+            <li><a href="#" class="active">1</a></li>
+            <li><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+            <li><a href="#">4</a></li>
+            <li><a href="#">5</a></li>
+            <li><a href="#">下一页 &raquo;</a></li>
+        </ul>
+        </div>
+    </div>
+    
+    <!-- 页脚 - 与首页相同 -->
+    <div class="footer">
+        <p>© 2025 一二一运动数字档案库 版权所有</p>
+    </div>
+    
+    <!-- JavaScript - 与首页相同 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取当前页面路径
+            const currentPath = window.location.pathname.split('/').pop();
+            
+            // 设置活动导航项
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath || 
+                    (currentPath === 'home page.html' && link.getAttribute('href') === 'home page.html')) {
+                    link.classList.add('active');
+                    
+                    // 如果是下拉菜单项，激活父菜单
+                    if (link.parentElement.parentElement.classList.contains('dropdown-content')) {
+                        const parentLink = link.closest('.dropdown').querySelector('.nav-link');
+                        if (parentLink) parentLink.classList.add('active');
+                    }
+                }
+            });
+            
+            // 搜索功能
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    const searchTerm = this.value.trim().toLowerCase();
+                    if (searchTerm) {
+                        alert(`正在搜索: ${searchTerm}`);
+                        // 实际项目中可以跳转到搜索结果页面
+                    }
+                }
+            });
+            
+            // 筛选按钮功能
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // 移除所有按钮的active类
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    // 给当前点击的按钮添加active类
+                    this.classList.add('active');
+                    // 这里可以添加实际的筛选逻辑
+                });
+            });
+        });
+    </script>
+</body>
+</html>
